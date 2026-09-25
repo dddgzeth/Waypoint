@@ -104,7 +104,7 @@ Design rule: language judgment goes to the model, given good context. Hard const
 
 **Real state, not a fixed list.** Balances come from Alchemy token discovery, so every ERC-20 a wallet has touched is seen, not one hardcoded stablecoin. Likely spam and phishing tokens are filtered out before anything is shown or planned against. Tokens can be given as a curated symbol or as any raw ERC-20 address, with decimals resolved live.
 
-**Live yield.** "The highest-yielding Aave market" is answered by reading Aave V3 reserve data directly from each chain's Pool contract, not by a model's memory. An early version let the model guess and it picked the wrong chain.
+**Live yield.** "The highest-yielding Aave market" is answered by reading Aave V3 reserve data directly from each chain's Pool contract, not by a model's memory.
 
 **Positions.** Aave positions and health factors are read live per wallet and chain.
 
@@ -133,7 +133,7 @@ Say it in the chat. Waypoint drafts a typed rule, you confirm once, and it runs 
 - A wallet with zero native balance cannot pay gas even to move an ERC-20, and the top-up may not be visible on the next RPC read, so poll until it is.
 - An Aave aToken's decimals always equal its underlying asset's.
 - Cross-chain arrival is confirmed from the bridge's own status API, never by diffing a balance.
-- Crypto slang differs by community and language. "U" or "刀" can mean dollars and "大饼" means Bitcoin. The model reads it in context. A regex for this was written, kept failing, and was deleted.
+- Crypto slang differs by community and language. "U" or "刀" can mean dollars and "大饼" means Bitcoin. The model reads it in context.
 - Dollar amounts are converted with a live price, never a remembered one.
 
 ## Wallets, accounts and custody
