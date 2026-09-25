@@ -19,7 +19,7 @@
 
 **8 种动作：** `transfer`、`swap`、`bridge`、`cross_chain_swap`、`protocol_supply`、`protocol_withdraw`、`protocol_borrow`（Aave V3）、`custom_call`。
 
-- 同链 swap：优先 Enso，OKX DEX 聚合器作为自动备选。
+- 同链 swap：Enso 和 OKX DEX 聚合器。由 `SAME_CHAIN_SWAP_PRIMARY`（默认 `enso`，也可设为 `okx`）决定谁优先，另一个自动作为备选。
 - 跨链：LI.FI 或 Relay。
 - Aave 存款、取款、借款：直接调用 Aave Pool 合约。
 - `custom_call`：对单条链上任意合约、任意函数做通用 ABI 编码。账号没用过的 `(合约, 函数)` 组合需要明确确认。

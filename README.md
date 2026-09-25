@@ -19,7 +19,7 @@ People are still the routing engine for their own on-chain activity. Assets are 
 
 **8 action types:** `transfer`, `swap`, `bridge`, `cross_chain_swap`, `protocol_supply`, `protocol_withdraw`, `protocol_borrow` (Aave V3), `custom_call`.
 
-- Same-chain swaps: Enso first, OKX DEX aggregator as automatic fallback.
+- Same-chain swaps: Enso and the OKX DEX aggregator. `SAME_CHAIN_SWAP_PRIMARY` (`enso` by default, or `okx`) picks which is tried first; the other is the automatic fallback.
 - Cross-chain: LI.FI or Relay.
 - Aave supply, withdraw, borrow: direct Aave Pool contract calls.
 - `custom_call`: generic ABI encoding for any contract and function on a single chain. A `(contract, function)` pair the account has not used before needs explicit confirmation.
