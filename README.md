@@ -6,7 +6,7 @@
 
 Say what you want done onchain. Waypoint plans the multi-step, cross-chain execution, simulates every transaction before signing, and executes it after one confirmation. It remembers you, sees everything you hold, and keeps watching when you are away.
 
-- Demo video: https://youtu.be/bbQQfdj6URM
+- Demo video: https://youtu.be/6LMw3-1uHQk
 - Live app: https://waypoint.cjlin.com
 
 ## Vision

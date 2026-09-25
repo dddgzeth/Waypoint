@@ -6,7 +6,7 @@
 
 说出你想在链上完成的事。Waypoint 规划多步骤、跨链的执行方案，每笔交易签名前先模拟，你确认一次后执行。它记得你，看得到你持有的一切，你不在的时候也一直盯着。
 
-- 演示视频：https://youtu.be/bbQQfdj6URM
+- 演示视频：https://youtu.be/6LMw3-1uHQk
 - 在线体验：https://waypoint.cjlin.com
 
 ## 愿景
