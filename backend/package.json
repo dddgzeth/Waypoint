@@ -1,0 +1,36 @@
+{
+  "name": "waypoint-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/runDemo.ts",
+    "dev": "tsx watch src/server.ts",
+    "compare:swap-providers": "tsx src/runSwapProviderComparison.ts",
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "@metamask/smart-accounts-kit": "^2.0.0",
+    "@privy-io/node": "^0.29.0",
+    "better-sqlite3": "^12.11.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "openai": "^4.104.0",
+    "siwe": "^3.0.0",
+    "viem": "^2.21.54",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

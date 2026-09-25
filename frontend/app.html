@@ -1,0 +1,2862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waypoint — App</title>
+<link rel="icon" href="data:image/png;base64,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">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-panel: #0e1420;
+    --bg-card: #121826;
+    --bg-card-2: #161d2c;
+    --border: #232b3d;
+    --text: #e6e9f0;
+    --text-dim: #94a3b8;
+    --text-dimmer: #5b6579;
+    --accent: #7dd3c0;
+    --accent-2: #a78bfa;
+    --accent-3: #f0b869;
+    --danger: #f5876a;
+    --mono: "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  .sidebar {
+    width: 280px; flex-shrink: 0; background: var(--bg-panel);
+    border-right: 1px solid var(--border); padding: 22px 20px;
+    display: flex; flex-direction: column; gap: 22px; overflow-y: auto;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .brand span { font-weight: 700; font-size: 17px; }
+
+  .account-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+  }
+  .account-card .status-line { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-dim); margin-bottom: 10px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dimmer); flex-shrink: 0; }
+  .status-dot.on { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .wallet-addr { font-family: var(--mono); font-size: 12.5px; color: var(--text); word-break: break-all; margin-bottom: 12px; }
+  .btn {
+    font-family: inherit; font-size: 13px; font-weight: 600; border-radius: 9px; padding: 9px 14px;
+    cursor: pointer; border: 1px solid var(--border); background: var(--bg-card-2); color: var(--text);
+    width: 100%; text-align: center;
+  }
+  .btn.primary { background: var(--accent); color: #06110d; border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.small { width: auto; padding: 6px 10px; font-size: 12px; }
+  .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+  /* Email login (register/sign-in) — the only way an account gets created now; a
+     wallet is linked to it afterward, never used to spin one up on its own. */
+  .auth-form { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .auth-form input {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 9px 10px;
+    color: var(--text); font-family: inherit; font-size: 13px; width: 100%; box-sizing: border-box;
+  }
+  .auth-form input:focus { outline: none; border-color: var(--accent); }
+  .auth-context { font-size: 12px; color: var(--text-dim); }
+  .auth-context strong { color: var(--text); }
+  .link-btn { background: none; border: none; color: var(--accent); font-size: 11.5px; cursor: pointer; padding: 0; margin-left: 6px; text-decoration: underline; }
+  .auth-error { color: var(--danger); font-size: 12px; margin-top: 4px; }
+  .auth-divider { display: flex; align-items: center; gap: 10px; margin: 10px 0; color: var(--text-dimmer); font-size: 11px; }
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .side-section h4 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dimmer);
+    margin: 0 0 10px; font-weight: 700;
+  }
+  .side-note { font-size: 11.5px; color: var(--text-dimmer); line-height: 1.6; }
+  .side-foot { margin-top: auto; font-size: 11px; color: var(--text-dimmer); line-height: 1.6; }
+  .side-foot a { color: var(--text-dim); }
+
+  .nav-tabs { display: flex; flex-direction: column; gap: 2px; }
+  .nav-tab {
+    display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px;
+    font-size: 13.5px; color: var(--text-dim); cursor: pointer; border: 1px solid transparent;
+  }
+  .nav-tab:hover { background: var(--bg-card); }
+  .nav-tab.active { background: var(--bg-card); color: var(--text); border-color: var(--border); }
+  .nav-tab .nav-icon { width: 16px; text-align: center; }
+
+  .wallet-view { flex: 1; overflow-y: auto; padding: 26px 30px; display: none; }
+  .wallet-view.active { display: block; }
+  .wallet-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; }
+  .wallet-section h3 { font-size: 13px; margin: 0 0 4px; color: var(--text); }
+  .wallet-section .wallet-sub { font-size: 12px; color: var(--text-dimmer); margin-bottom: 14px; }
+  .full-address-row {
+    display: flex; align-items: center; gap: 10px; background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 10px 12px; font-family: var(--mono); font-size: 12.5px; word-break: break-all;
+  }
+  .full-address-row .addr-text { flex: 1; }
+  .copy-btn {
+    flex-shrink: 0; font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+    background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 5px 9px; cursor: pointer;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+  .rename-input { font: inherit; background: var(--bg-card-2); border: 1px solid var(--accent); border-radius: 5px; padding: 2px 6px; color: var(--text); width: 100%; box-sizing: border-box; }
+  .consolidate-row td { padding: 10px 8px; background: var(--bg-card-2); }
+  .consolidate-form { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+  .consolidate-form .form-field { min-width: 160px; }
+  .consolidate-status { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+  .balance-total { font-size: 22px; font-weight: 700; margin: 10px 0 14px; }
+  .token-row {
+    display: flex; justify-content: space-between; align-items: center; padding: 8px 0;
+    border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .token-row:last-child { border-bottom: none; }
+  .token-row .token-chain { color: var(--text-dimmer); font-size: 11px; font-family: var(--mono); }
+  .token-row .token-usd { color: var(--text-dim); }
+  .wallet-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .wallet-row:last-child { border-bottom: none; }
+  .wallet-row .wallet-dot { width: 26px; height: 26px; border-radius: 7px; background: var(--bg-card-2); flex-shrink: 0; }
+  .wallet-row .wallet-info { flex: 1; min-width: 0; }
+  .wallet-row .wallet-info .addr { font-family: var(--mono); font-size: 12.5px; color: var(--text); }
+  .wallet-row .wallet-info .bal { font-size: 11.5px; color: var(--text-dimmer); }
+  /* Real address prefix/suffix shown next to a wallet's label everywhere, even after a custom rename — so the address is never fully hidden behind a name. */
+  .cw-addr { font-family: var(--mono); font-size: 10.5px; color: var(--text-dimmer); }
+  .empty-hint { font-size: 12px; color: var(--text-dimmer); padding: 10px 0; }
+
+  .wallet-section-head { display: flex; align-items: center; justify-content: space-between; }
+  .add-wallet-btn {
+    font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); background: var(--bg-card-2);
+    border: 1px solid var(--border); border-radius: 7px; padding: 6px 12px; cursor: pointer; flex-shrink: 0;
+  }
+  .add-wallet-btn:hover { color: var(--text); border-color: var(--accent); }
+  .wallet-head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .import-wallet-form {
+    display: none; margin: 14px 0 4px; padding: 14px; border: 1px solid var(--border);
+    border-radius: 10px; background: var(--bg-card-2);
+  }
+  .import-wallet-form.open { display: block; }
+  .import-wallet-note { margin-bottom: 12px; color: var(--text-dim); font-size: 11.5px; line-height: 1.5; }
+  .import-wallet-error { min-height: 18px; margin-top: 9px; color: var(--danger); font-size: 12px; }
+
+  /* Bankr-style portfolio: chain list on the left, selected chain's token table on the right */
+  .portfolio-layout { display: flex; gap: 16px; margin-top: 14px; }
+  .chain-list { width: 190px; flex-shrink: 0; display: flex; flex-direction: column; gap: 3px; }
+  .chain-row {
+    display: flex; align-items: center; justify-content: space-between; padding: 9px 10px; border-radius: 8px;
+    font-size: 13px; cursor: pointer; border: 1px solid transparent; color: var(--text-dim);
+  }
+  .chain-row:hover { background: var(--bg-card-2); }
+  .chain-row.selected { background: var(--bg-card-2); border-color: var(--accent); color: var(--text); }
+  .chain-row .chain-name { display: flex; align-items: center; gap: 8px; }
+  .chain-row .chain-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); flex-shrink: 0; }
+  .token-table { flex: 1; min-width: 0; }
+  .token-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .token-table th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-dimmer); font-weight: 600; padding: 0 0 8px; border-bottom: 1px solid var(--border); }
+  .token-table td { padding: 9px 0; border-bottom: 1px solid var(--border); color: var(--text); }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table .t-symbol { font-weight: 600; }
+  .token-cell { display: inline-flex; align-items: center; gap: 7px; }
+  .token-logo, .token-logo-fallback {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  }
+  .token-logo { object-fit: cover; }
+  .token-logo-fallback {
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    font-size: 9px; font-weight: 700; color: var(--text-dimmer);
+  }
+  .token-addr-copy {
+    font-size: 11px; color: var(--text-dimmer); background: transparent; border: none; cursor: pointer;
+    padding: 2px 4px; border-radius: 4px; line-height: 1;
+  }
+  .token-addr-copy:hover { color: var(--text); background: var(--bg-card-2); }
+  .zero-toggle-btn {
+    display: block; margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--text-dimmer);
+    background: transparent; border: 1px dashed var(--border); border-radius: 7px; padding: 6px 10px; cursor: pointer; width: 100%;
+  }
+  .zero-toggle-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  .defi-area { margin-top: 16px; }
+  .defi-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+  .defi-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dimmer); font-weight: 700; }
+  .defi-summary { font-size: 11.5px; color: var(--text-dim); }
+  .defi-market { border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); padding: 12px; margin-top: 8px; }
+  .defi-market-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .defi-market-name { font-size: 13px; font-weight: 700; }
+  .defi-market-chain { color: var(--text-dimmer); font-weight: 500; margin-left: 5px; }
+  .defi-open { color: var(--accent); font-size: 11.5px; text-decoration: none; }
+  .defi-open:hover { text-decoration: underline; }
+  .defi-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 10px 0 4px; }
+  .defi-stat { background: var(--bg-card-2); border-radius: 7px; padding: 7px 8px; }
+  .defi-stat-label { display: block; color: var(--text-dimmer); font-size: 9.5px; text-transform: uppercase; letter-spacing: .04em; }
+  .defi-stat-value { display: block; color: var(--text); font-size: 12px; font-weight: 600; margin-top: 2px; }
+  .defi-position-row { display: grid; grid-template-columns: 72px minmax(110px, 1fr) minmax(90px, 1fr) 92px; align-items: center; gap: 10px; padding: 9px 2px; border-top: 1px solid var(--border); font-size: 12px; }
+  .defi-side { display: inline-flex; width: fit-content; border-radius: 999px; padding: 3px 7px; font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; }
+  .defi-side.supply { color: var(--accent); background: rgba(125,211,192,.12); }
+  .defi-side.borrow { color: var(--danger); background: rgba(245,135,106,.12); }
+  .defi-asset { font-weight: 700; }
+  .defi-sub { display: block; color: var(--text-dimmer); font-size: 10px; margin-top: 2px; }
+  .defi-rate { text-align: right; color: var(--text-dim); }
+  .defi-empty { border: 1px dashed var(--border); border-radius: 9px; color: var(--text-dimmer); padding: 10px 12px; font-size: 11.5px; }
+
+  .cwt-defi { margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); }
+  .cwt-defi-head { display: flex; align-items: center; justify-content: space-between; font-size: 10.5px; color: var(--accent); }
+  .cwt-defi-line { display: flex; justify-content: space-between; gap: 8px; color: var(--text-dimmer); font-size: 10px; margin-top: 3px; }
+
+  .trigger-card {
+    border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; background: var(--bg-card-2);
+  }
+  .trigger-card .tc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .trigger-card .tc-title { font-size: 13.5px; font-weight: 600; }
+  .trigger-card .tc-status { font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 6px; }
+  .trigger-card .tc-status.ok { color: var(--accent); background: rgba(125,211,192,0.12); }
+  .trigger-card .tc-status.warn { color: var(--danger); background: rgba(245,135,106,0.12); }
+  .trigger-card .tc-row { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-dim); padding: 4px 0; }
+  .trigger-card .tc-actions { margin-top: 10px; display: flex; gap: 8px; }
+  .trigger-card .tc-head.clickable { cursor: pointer; }
+  .trigger-card .tc-type { font-family: var(--mono); font-size: 10px; color: var(--text-dimmer); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+
+  .template-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
+  .template-card {
+    border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; background: var(--bg-card-2);
+    transition: border-color .15s;
+  }
+  .template-card:hover { border-color: var(--accent); }
+  .template-card.selected { border-color: var(--accent); background: rgba(125,211,192,0.06); }
+  .template-icon { font-size: 20px; margin-bottom: 6px; }
+  .template-title { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+  .template-desc { font-size: 12px; color: var(--text-dimmer); line-height: 1.4; }
+
+  .context-box {
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin: 10px 0;
+    background: var(--bg-card); font-size: 12.5px; color: var(--text-dim);
+  }
+  .context-box .cb-row { display: flex; justify-content: space-between; padding: 3px 0; }
+  .context-box .cb-row span:last-child { color: var(--text); font-family: var(--mono); }
+
+  .exec-log { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+  .exec-log-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .exec-log-row:last-child { border-bottom: none; }
+  .exec-log-row .el-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; }
+  .exec-log-row .el-badge.ok { color: var(--accent); background: rgba(125,211,192,0.12); }
+  .exec-log-row .el-badge.fail { color: var(--danger); background: rgba(245,135,106,0.12); }
+  .exec-log-row .el-detail { flex: 1; min-width: 0; color: var(--text-dim); }
+  .exec-log-row .el-detail .mono { font-size: 10.5px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field label { font-size: 11px; color: var(--text-dimmer); text-transform: uppercase; letter-spacing: .04em; }
+  .form-field select, .form-field input {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px;
+    color: var(--text); font-family: inherit; font-size: 13px;
+  }
+  .form-actions { margin-top: 14px; display: flex; gap: 10px; }
+
+  .danger-btn {
+    font-family: var(--mono); font-size: 11.5px; color: var(--danger); background: transparent;
+    border: 1px solid rgba(245,135,106,0.35); border-radius: 7px; padding: 6px 12px; cursor: pointer;
+  }
+  .danger-btn:hover { background: rgba(245,135,106,0.1); }
+  .export-warning {
+    margin-top: 12px; padding: 14px; border: 1px solid rgba(245,135,106,0.4); border-radius: 10px;
+    background: rgba(245,135,106,0.06); font-size: 12.5px; color: var(--text);
+  }
+  .export-warning .ew-title { color: var(--danger); font-weight: 700; margin-bottom: 6px; }
+  .export-warning ul { margin: 8px 0; padding-left: 18px; line-height: 1.6; }
+  .export-key-box {
+    margin-top: 10px; font-family: var(--mono); font-size: 12px; word-break: break-all;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px;
+  }
+
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .topbar {
+    height: 56px; flex-shrink: 0; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 22px;
+  }
+  .topbar h1 { font-size: 15px; margin: 0; font-weight: 600; }
+  .new-chat-btn {
+    font-family: var(--mono); font-size: 12px; color: var(--text-dim);
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 7px;
+    padding: 6px 12px; cursor: pointer;
+  }
+  .new-chat-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* #chatView is a row: the message thread on the left, the wallet reference panel on the right */
+  #chatView { flex: 1; min-width: 0; overflow: hidden; }
+  .chat-main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100%; }
+  .chat-wallets-panel { width: 320px; flex-shrink: 0; border-left: 1px solid var(--border); padding: 18px 16px; overflow-y: auto; }
+  .chat-wallets-panel h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dimmer); margin: 0 0 10px; font-weight: 700; }
+  .chat-wallets-panel h4:not(:first-child) { margin-top: 22px; }
+  .cw-card { border-radius: 8px; margin-bottom: 6px; border: 1px solid transparent; }
+  .cw-card.active { border-color: var(--accent); background: rgba(125,211,192,0.08); }
+  .cw-row {
+    display: flex; align-items: center; gap: 8px; padding: 8px 8px; cursor: pointer;
+  }
+  .cw-card:not(.active) .cw-row:hover { background: var(--bg-card-2); border-radius: 8px; }
+  .cw-row .cw-info { flex: 1; min-width: 0; }
+  .cw-row .cw-label { font-size: 12.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cw-row .cw-addr { font-family: var(--mono); font-size: 10.5px; color: var(--text-dimmer); }
+  .cw-row .cw-total { flex-shrink: 0; font-size: 12px; color: var(--text); font-weight: 600; }
+  .cw-row .cw-copy {
+    flex-shrink: 0; font-size: 11px; color: var(--text-dimmer); background: transparent; border: 1px solid var(--border);
+    border-radius: 5px; padding: 3px 6px; cursor: pointer;
+  }
+  .cw-row .cw-copy:hover { color: var(--text); border-color: var(--accent); }
+  .cw-empty { font-size: 11.5px; color: var(--text-dimmer); line-height: 1.5; }
+  .cw-tokens { padding: 0 8px 8px; }
+  .cw-tokens .cwt-empty { font-size: 11px; color: var(--text-dimmer); padding: 4px 0; }
+  .cwt-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 0; border-top: 1px solid var(--border); }
+  .cwt-left { min-width: 0; display: flex; align-items: baseline; gap: 6px; }
+  .cwt-symbol { font-size: 12px; font-weight: 600; color: var(--text); }
+  .cwt-chain { font-size: 10px; color: var(--text-dimmer); }
+  .cwt-right { flex-shrink: 0; text-align: right; }
+  .cwt-val { display: block; font-size: 12px; color: var(--text); }
+  .cwt-amt { display: block; font-size: 10px; color: var(--text-dimmer); font-family: var(--mono); }
+  .cw-tokens .zero-toggle-btn {
+    display: block; width: 100%; margin-top: 6px; padding: 5px; font-size: 10.5px; color: var(--text-dimmer);
+    background: transparent; border: 1px dashed var(--border); border-radius: 6px; cursor: pointer;
+  }
+  .cw-tokens .zero-toggle-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  .session-list { display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
+  .session-row {
+    display: flex; align-items: center; gap: 6px; padding: 7px 8px; border-radius: 7px; cursor: pointer; font-size: 12.5px;
+  }
+  .session-row:hover { background: var(--bg-card-2); }
+  .session-row.active { background: rgba(125,211,192,0.1); color: var(--accent); }
+  .session-row .sr-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: inherit; }
+  .session-row .sr-delete {
+    flex-shrink: 0; opacity: 0; font-size: 12px; color: var(--text-dimmer); background: transparent; border: none; cursor: pointer; padding: 2px 4px;
+  }
+  .session-row:hover .sr-delete { opacity: 1; }
+  .session-row .sr-delete:hover { color: var(--danger); }
+
+  .messages { flex: 1; overflow-y: auto; padding: 26px 22px; display: flex; flex-direction: column; gap: 16px; }
+  /* Keep independently-scrollable panels visually inside the dark product
+     surface. Without this, macOS can render its native light scrollbar as a
+     bright vertical rail between chat and the wallets panel. */
+  .messages, .chat-wallets-panel, .session-list, .wallet-view {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .messages::-webkit-scrollbar, .chat-wallets-panel::-webkit-scrollbar, .session-list::-webkit-scrollbar, .wallet-view::-webkit-scrollbar { width: 8px; height: 8px; }
+  .messages::-webkit-scrollbar-track, .chat-wallets-panel::-webkit-scrollbar-track, .session-list::-webkit-scrollbar-track, .wallet-view::-webkit-scrollbar-track { background: transparent; }
+  .messages::-webkit-scrollbar-thumb, .chat-wallets-panel::-webkit-scrollbar-thumb, .session-list::-webkit-scrollbar-thumb, .wallet-view::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--bg); border-radius: 999px; }
+  .messages::-webkit-scrollbar-thumb:hover, .chat-wallets-panel::-webkit-scrollbar-thumb:hover, .session-list::-webkit-scrollbar-thumb:hover, .wallet-view::-webkit-scrollbar-thumb:hover { background: var(--text-dimmer); }
+  .empty-state { margin: auto; text-align: center; color: var(--text-dimmer); font-size: 13.5px; max-width: 360px; }
+  .msg { display: flex; gap: 12px; max-width: 760px; opacity: 0; animation: rise .35s ease forwards; }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+  .avatar.agent { background: rgba(125,211,192,0.15); color: var(--accent); border: 1px solid rgba(125,211,192,0.3); }
+  .avatar.user { background: rgba(167,139,250,0.15); color: var(--accent-2); border: 1px solid rgba(167,139,250,0.3); }
+  .bubble { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 15px; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+  .msg.user .bubble { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.25); }
+  /* .bubble's pre-wrap is right for a plain-text agent reply (preserves real
+     newlines in e.g. an error message), but wide bubbles carry structured
+     HTML (plan cards, kv-tables) built from multi-line template literals —
+     inheriting pre-wrap turned every literal's indentation newline into a
+     real rendered blank line, ballooning card height for no reason. */
+  .bubble.wide { width: 100%; max-width: 560px; white-space: normal; }
+  .bubble.error { border-color: rgba(245,135,106,0.4); color: var(--danger); }
+
+  .typing { display: flex; gap: 4px; padding: 4px 2px; }
+  .typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dimmer); animation: blink 1.2s infinite ease-in-out; }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,80%,100% { opacity: .25; } 40% { opacity: 1; } }
+  .typing-stage { font-size: 12px; color: var(--text-dimmer); padding: 2px 2px 0; min-height: 15px; }
+
+  .plan-step { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-top: 10px; background: var(--bg-card-2); }
+  .plan-step .ps-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 12px; color: var(--text-dimmer); margin-bottom: 6px; }
+  .plan-step .ps-body { font-size: 13.5px; }
+  .plan-step .ps-tag { display: inline-block; font-family: var(--mono); font-size: 10.5px; color: var(--accent-2); background: rgba(167,139,250,0.1); border-radius: 5px; padding: 2px 6px; margin-top: 6px; }
+  .dep-arrow { text-align: center; color: var(--text-dimmer); font-family: var(--mono); font-size: 12px; margin: 2px 0; }
+
+  .confirm-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .confirm-actions .btn { width: auto; padding: 9px 18px; }
+  .toast { font-size: 12.5px; color: var(--text-dim); font-style: italic; }
+
+  .risk-block { border: 1px solid rgba(245,135,106,0.35); background: rgba(245,135,106,0.06); border-radius: 10px; padding: 12px 14px; margin-top: 12px; }
+  .risk-head { font-size: 12.5px; font-weight: 600; color: var(--danger); margin-bottom: 8px; }
+  .risk-item { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(245,135,106,0.2); }
+  .risk-item:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+  .risk-target { font-family: var(--mono); font-size: 11.5px; color: var(--text); word-break: break-all; }
+  .risk-sig { font-family: var(--mono); font-size: 11px; color: var(--text-dim); word-break: break-all; margin-top: 2px; }
+  .risk-reason { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  .mono { font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); word-break: break-all; }
+
+  /* Progressive chat beats: reading balances / parsed goal (kv-table), live per-step execution (exec-step), final summary (final-card) */
+  .kv-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12.5px; margin-top: 8px; }
+  .kv-table td { padding: 4px 0; }
+  .kv-table td:first-child { color: var(--text-dimmer); padding-right: 14px; white-space: nowrap; vertical-align: top; }
+
+  .exec-step { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-top: 10px; background: var(--bg-card-2); transition: opacity .2s; }
+  .exec-step .es-title { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dimmer); flex-shrink: 0; }
+  .status-dot.ok { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .status-dot.pending { background: var(--accent-3); animation: pulse 1s infinite; }
+  .status-dot.fail { background: var(--danger); }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .es-detail { font-size: 12.5px; color: var(--text-dim); margin-top: 6px; }
+  .es-tx { font-family: var(--mono); font-size: 11.5px; margin-top: 6px; word-break: break-all; }
+  .es-tx a { color: var(--accent); text-decoration: none; }
+  .es-tx a:hover { text-decoration: underline; }
+
+  .final-card { border: 1px solid rgba(125,211,192,0.35); background: linear-gradient(160deg, rgba(125,211,192,0.08), var(--bg-card)); border-radius: 12px; padding: 16px 18px; margin-top: 10px; }
+  .final-card .fc-amount { font-family: var(--mono); font-size: 20px; color: var(--accent); }
+  .final-card .fc-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+  .composer { border-top: 1px solid var(--border); padding: 16px 22px 20px; flex-shrink: 0; }
+  .composer-inner { display: flex; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 6px 6px 6px 14px; }
+  .composer-inner input {
+    flex: 1; background: transparent; border: none; outline: none; color: var(--text);
+    font-family: inherit; font-size: 14px; padding: 8px 0;
+  }
+  .composer-inner input::placeholder { color: var(--text-dimmer); }
+  .composer-inner input:disabled { opacity: .5; }
+  .send-btn {
+    background: var(--accent); color: #06110d; border: none; border-radius: 9px;
+    padding: 0 18px; font-weight: 700; font-size: 13px; cursor: pointer; flex-shrink: 0;
+  }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .stop-btn {
+    background: var(--bg-card-2); color: var(--text); border: 1px solid var(--border); border-radius: 9px;
+    padding: 0 16px; font-weight: 700; font-size: 13px; cursor: pointer; flex-shrink: 0;
+    display: none; align-items: center; gap: 7px;
+  }
+  .stop-btn:hover { border-color: var(--danger); color: var(--danger); }
+  .stop-btn .stop-icon { width: 9px; height: 9px; background: currentColor; border-radius: 2px; flex-shrink: 0; }
+  .composer-note { font-size: 11px; color: var(--text-dimmer); margin-top: 8px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="data:image/png;base64,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" alt="Waypoint">
+      <span>Waypoint</span>
+    </div>
+
+    <div class="account-card">
+      <div class="status-line"><span class="status-dot" id="statusDot"></span><span id="statusText">Not connected</span></div>
+      <div id="loggedOutView">
+        <button type="button" id="googleSignInBtn" class="btn google-btn" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+          <span>Continue with Google</span>
+        </button>
+        <div class="auth-divider" id="googleDivider" style="display:none;">OR</div>
+        <form id="emailStepForm" class="auth-form">
+          <input type="email" id="authEmail" placeholder="Email" autocomplete="email" required />
+          <button type="submit" class="btn primary" id="authEmailBtn">Continue with email</button>
+        </form>
+        <form id="passwordStepForm" class="auth-form" style="display:none;">
+          <div class="auth-context" id="authContext"></div>
+          <input type="password" id="authPassword" placeholder="Password" autocomplete="current-password" required />
+          <input type="password" id="authConfirm" placeholder="Confirm password" autocomplete="new-password" style="display:none;" />
+          <button type="submit" class="btn primary" id="authPasswordBtn">Sign in</button>
+        </form>
+        <div class="auth-error" id="authError" style="display:none;"></div>
+        <div class="side-note" style="margin-top:10px;">Your account is your email — a wallet gets linked to it afterward (Wallet tab), verified by its own signature. A wallet key alone can never sign into someone else's account.</div>
+      </div>
+      <div id="loggedInView" style="display:none;">
+        <div class="wallet-addr" id="activeWalletAddr"></div>
+        <button class="btn small" id="signOutBtn">Sign out</button>
+      </div>
+    </div>
+
+    <div class="side-section" id="navSection" style="display:none;">
+      <h4>Agent</h4>
+      <div class="nav-tabs">
+        <div class="nav-tab active" id="navChat" data-view="chat"><span class="nav-icon">&#128172;</span>Chat</div>
+        <div class="nav-tab" id="navWallet" data-view="wallet"><span class="nav-icon">&#128179;</span>Wallet</div>
+        <div class="nav-tab" id="navAutomations" data-view="automations"><span class="nav-icon">&#9889;</span>Automations</div>
+        <div class="nav-tab" id="navTrust" data-view="trust"><span class="nav-icon">&#128274;</span>Trust List</div>
+      </div>
+    </div>
+
+    <div class="side-section" id="sessionsSection" style="display:none;">
+      <h4>Recent Chats</h4>
+      <div class="session-list" id="sessionsList"></div>
+    </div>
+
+    <div class="side-foot">Waypoint — goal-driven cross-chain execution.</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="topbarTitle">Sign in to start</h1>
+      <button class="new-chat-btn" id="newChatBtn" style="display:none;">+ New chat</button>
+    </div>
+
+    <div id="chatView" style="display:flex;">
+      <div class="chat-main">
+        <div class="messages" id="messages">
+          <div class="empty-state" id="emptyState">Connect your wallet to start a real conversation with Waypoint. State a goal — Waypoint will ask for anything it's missing, then plan it against your real on-chain state.</div>
+        </div>
+        <div class="composer">
+          <div class="composer-inner">
+            <input id="goalInput" placeholder="Connect your wallet first…" disabled />
+            <button class="send-btn" id="sendBtn" disabled>Send</button>
+            <button class="stop-btn" id="stopBtn" type="button"><span class="stop-icon"></span>Stop</button>
+          </div>
+          <div class="composer-note">Real backend calls — real goal parsing, real planning against your real on-chain state.</div>
+        </div>
+      </div>
+      <aside class="chat-wallets-panel" id="chatWalletsPanel"></aside>
+    </div>
+
+    <div class="wallet-view" id="walletView">
+      <div class="wallet-section">
+        <div class="wallet-section-head">
+          <div>
+            <h3>Execution Wallets</h3>
+            <div class="wallet-sub">Hands-free — Waypoint signs from these automatically, no live confirmation needed. Create a new wallet or import one you already control; pick which one a goal executes against when you confirm a plan.</div>
+          </div>
+          <div class="wallet-head-actions">
+            <button class="add-wallet-btn" id="importExecWalletBtn">Import Private Key</button>
+            <button class="add-wallet-btn" id="createExecWalletBtn">+ Create Wallet</button>
+          </div>
+        </div>
+        <form class="import-wallet-form" id="importExecWalletForm" autocomplete="off">
+          <div class="import-wallet-note">Import an existing EVM wallet as a full execution wallet. The key is sent once to the backend, encrypted for Privy, and is never stored in this browser or Waypoint's database.</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="importExecWalletLabel">Label (optional)</label>
+              <input id="importExecWalletLabel" type="text" placeholder="My execution wallet" maxlength="80" />
+            </div>
+            <div class="form-field">
+              <label for="importExecWalletKey">Ethereum private key</label>
+              <input id="importExecWalletKey" type="password" placeholder="0x…" autocomplete="new-password" spellcheck="false" required />
+            </div>
+          </div>
+          <div class="import-wallet-error" id="importExecWalletError"></div>
+          <div class="form-actions">
+            <button class="btn primary small" id="confirmImportExecWalletBtn" type="submit">Import Wallet</button>
+            <button class="btn small" id="cancelImportExecWalletBtn" type="button">Cancel</button>
+          </div>
+        </form>
+        <div id="execWalletsList"></div>
+      </div>
+
+      <div class="wallet-section">
+        <div class="wallet-section-head">
+          <div>
+            <h3>Linked Wallets</h3>
+            <div class="wallet-sub">All wallets you've signed in with, on this one account. Click a wallet to see its per-chain breakdown.</div>
+          </div>
+          <button class="add-wallet-btn" id="addWalletBtn">+ Add Wallet</button>
+        </div>
+        <div id="linkedWalletsList"></div>
+      </div>
+    </div>
+
+    <div class="wallet-view" id="automationsView">
+      <div class="wallet-section">
+        <div class="wallet-section-head">
+          <div>
+            <h3>Automations</h3>
+            <div class="wallet-sub">Checked every 60s, fire with no live confirmation — you already authorized the exact action when you created one. Pick a template below; it shows your real current position before asking you to set parameters, not a blind form.</div>
+          </div>
+        </div>
+        <div class="template-picker" id="templatePicker">
+          <div class="template-card" data-template="health_factor">
+            <div class="template-icon">🛡️</div>
+            <div class="template-title">Health-Factor Repay</div>
+            <div class="template-desc">If health factor on a chain drops below a threshold, repay a % of the debt — real Aave V3 monitoring.</div>
+          </div>
+          <div class="template-card" data-template="dca">
+            <div class="template-icon">🔁</div>
+            <div class="template-title">DCA Buy</div>
+            <div class="template-desc">Buy a fixed amount on a recurring cadence; the first purchase is immediate unless you set a start time or delay.</div>
+          </div>
+        </div>
+        <div id="triggerCreateForm" style="display:none; margin: 16px 0;"></div>
+        <div id="triggersList"></div>
+      </div>
+    </div>
+
+    <div class="wallet-view" id="trustView">
+      <div class="wallet-section">
+        <div class="wallet-section-head">
+          <div>
+            <h3>Trusted Contract Calls</h3>
+            <div class="wallet-sub">custom_call steps hitting one of these (contract, function) pairs run without a high-risk warning — either because you confirmed one before, or a plan using it executed successfully. Revoke anything you no longer want auto-trusted.</div>
+          </div>
+        </div>
+        <div id="trustList"></div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+const API_BASE = window.WAYPOINT_API_BASE || (
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:8787"
+    : window.location.origin
+);
+
+const messages = document.getElementById('messages');
+const emptyState = document.getElementById('emptyState');
+const goalInput = document.getElementById('goalInput');
+const sendBtn = document.getElementById('sendBtn');
+const stopBtn = document.getElementById('stopBtn');
+const signOutBtn = document.getElementById('signOutBtn');
+const newChatBtn = document.getElementById('newChatBtn');
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
+const loggedOutView = document.getElementById('loggedOutView');
+const loggedInView = document.getElementById('loggedInView');
+const activeWalletAddr = document.getElementById('activeWalletAddr');
+const navSection = document.getElementById('navSection');
+const navChat = document.getElementById('navChat');
+const navWallet = document.getElementById('navWallet');
+const navAutomations = document.getElementById('navAutomations');
+const navTrust = document.getElementById('navTrust');
+const chatView = document.getElementById('chatView');
+const walletView = document.getElementById('walletView');
+const automationsView = document.getElementById('automationsView');
+const trustView = document.getElementById('trustView');
+const trustList = document.getElementById('trustList');
+const linkedWalletsList = document.getElementById('linkedWalletsList');
+const addWalletBtn = document.getElementById('addWalletBtn');
+const execWalletsList = document.getElementById('execWalletsList');
+const createExecWalletBtn = document.getElementById('createExecWalletBtn');
+const importExecWalletBtn = document.getElementById('importExecWalletBtn');
+const importExecWalletForm = document.getElementById('importExecWalletForm');
+const importExecWalletLabel = document.getElementById('importExecWalletLabel');
+const importExecWalletKey = document.getElementById('importExecWalletKey');
+const importExecWalletError = document.getElementById('importExecWalletError');
+const confirmImportExecWalletBtn = document.getElementById('confirmImportExecWalletBtn');
+const cancelImportExecWalletBtn = document.getElementById('cancelImportExecWalletBtn');
+const templatePicker = document.getElementById('templatePicker');
+const triggerCreateForm = document.getElementById('triggerCreateForm');
+const triggersList = document.getElementById('triggersList');
+const topbarTitle = document.getElementById('topbarTitle');
+const sessionsSection = document.getElementById('sessionsSection');
+const sessionsList = document.getElementById('sessionsList');
+const chatWalletsPanel = document.getElementById('chatWalletsPanel');
+
+// Fetched from GET /chains (backend/src/chains/) — never hand-maintained
+// here, so adding a chain backend-side needs zero frontend edit. Populated
+// by loadSupportedChains() before anything that reads it runs. Shown even at
+// $0 so the per-chain breakdown matches what Bankr's wallet page shows
+// (every supported chain listed, not just chains with a balance).
+let SUPPORTED_CHAINS = [];
+
+async function loadSupportedChains() {
+  const { chains } = await fetch(`${API_BASE}/chains`).then((r) => r.json());
+  SUPPORTED_CHAINS = chains;
+}
+
+let sessionId = null;
+let activeAddress = null;
+let myAccountId = null;
+let linkedWallets = [];
+let walletDataLoaded = false;
+let automationsDataLoaded = false;
+let trustDataLoaded = false;
+let chatWalletsPanelLoaded = false;
+let cachedExecWallets = [];
+let renderedAutomationUpdateIds = new Set();
+
+async function checksumAddress(address) {
+  const { getAddress } = await import('https://esm.sh/viem@2.55.13');
+  return getAddress(address);
+}
+
+function el(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html.trim();
+  return d.firstChild;
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...opts,
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);
+  return body;
+}
+
+/**
+ * POSTs to an SSE endpoint (server-sent `data: {...}\n\n` frames over a
+ * streamed fetch response, not a real EventSource — EventSource can't POST a
+ * body) and calls onEvent for each real event as it arrives. `signal` (an
+ * AbortSignal) lets a Stop button cancel mid-stream — the reject this
+ * produces is a real DOMException named "AbortError", which callers check
+ * for to show "cancelled" instead of a generic failure.
+ */
+async function postSSE(path, body, onEvent, signal) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal,
+  });
+  if (!res.ok || !res.body) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.error || `Request failed (${res.status})`);
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const frames = buffer.split('\n\n');
+    buffer = frames.pop();
+    for (const frame of frames) {
+      if (!frame.startsWith('data: ')) continue;
+      await onEvent(JSON.parse(frame.slice(6)));
+    }
+  }
+}
+
+// ── EIP-4361 (SIWE) message — must byte-for-byte match src/accounts/siweMessage.ts server-side ──
+function buildSiweMessage({ domain, address, statement, uri, chainId, nonce, issuedAt }) {
+  return `${domain} wants you to sign in with your Ethereum account:
+${address}
+
+${statement}
+
+URI: ${uri}
+Version: 1
+Chain ID: ${chainId}
+Nonce: ${nonce}
+Issued At: ${issuedAt}`;
+}
+
+function showAuthError(text) {
+  const node = document.getElementById('authError');
+  node.textContent = text;
+  node.style.display = 'block';
+}
+function clearAuthError() {
+  const node = document.getElementById('authError');
+  node.style.display = 'none';
+}
+
+// 'email' -> collect email, check if registered. 'login'/'register' -> collect
+// password, branching on what check-email found. Mirrors Synapse's login-panel.
+let authMode = 'email';
+let authEmailValue = '';
+
+function resetAuthForm() {
+  authMode = 'email';
+  authEmailValue = '';
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authConfirm').value = '';
+  clearAuthError();
+  renderAuthStep();
+}
+
+function renderAuthStep() {
+  const emailForm = document.getElementById('emailStepForm');
+  const passwordForm = document.getElementById('passwordStepForm');
+  if (authMode === 'email') {
+    emailForm.style.display = '';
+    passwordForm.style.display = 'none';
+    return;
+  }
+  emailForm.style.display = 'none';
+  passwordForm.style.display = '';
+  const context = document.getElementById('authContext');
+  context.innerHTML = `${authMode === 'register' ? 'Creating account for' : 'Signing in as'} <strong>${escapeHtml(authEmailValue)}</strong><button type="button" id="authChangeEmail" class="link-btn">Change</button>`;
+  document.getElementById('authChangeEmail').addEventListener('click', () => {
+    authMode = 'email';
+    renderAuthStep();
+    document.getElementById('authEmail').focus();
+  });
+  document.getElementById('authConfirm').style.display = authMode === 'register' ? '' : 'none';
+  document.getElementById('authPasswordBtn').textContent = authMode === 'register' ? 'Create account' : 'Sign in';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authConfirm').value = '';
+  document.getElementById('authPassword').focus();
+}
+
+async function handleEmailStepSubmit(e) {
+  e.preventDefault();
+  clearAuthError();
+  const email = document.getElementById('authEmail').value.trim();
+  if (!email) return;
+  const btn = document.getElementById('authEmailBtn');
+  btn.disabled = true;
+  try {
+    const { exists } = await api('/auth/check-email', { method: 'POST', body: JSON.stringify({ email }) });
+    authEmailValue = email;
+    authMode = exists ? 'login' : 'register';
+    renderAuthStep();
+  } catch (err) {
+    showAuthError(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function handlePasswordStepSubmit(e) {
+  e.preventDefault();
+  clearAuthError();
+  const password = document.getElementById('authPassword').value;
+  if (authMode === 'register') {
+    const confirm = document.getElementById('authConfirm').value;
+    if (password !== confirm) {
+      showAuthError("Passwords don't match.");
+      return;
+    }
+    if (password.length < 6) {
+      showAuthError('Password must be at least 6 characters.');
+      return;
+    }
+  }
+  const btn = document.getElementById('authPasswordBtn');
+  btn.disabled = true;
+  try {
+    const path = authMode === 'register' ? '/auth/register' : '/auth/login-email';
+    await api(path, { method: 'POST', body: JSON.stringify({ email: authEmailValue, password }) });
+    // A stale session cookie (expired, or a different login layered on top without
+    // signing out first) could otherwise leave every cached tab showing the PREVIOUS
+    // account's data under the new one — reset every account-scoped cache so each
+    // view refetches fresh for whichever account is now actually logged in.
+    walletDataLoaded = false;
+    trustDataLoaded = false;
+    automationsDataLoaded = false;
+    chatWalletsPanelLoaded = false;
+    await refreshAccount();
+    resetAuthForm();
+  } catch (err) {
+    showAuthError(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// window.location.origin is the literal string "null" when the page is
+// opened via file:// (e.g. double-clicking the HTML file) — that breaks the
+// SIWE message's URI field (siwe's parser requires a valid URI), causing a
+// "Malformed SIWE message" server-side rejection. Fall back to a real URI
+// derived from the (already-guarded) domain in that case.
+function siweDomainAndOrigin() {
+  const domain = window.location.hostname || 'localhost';
+  const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : `http://${domain}`;
+  return { domain, origin };
+}
+
+/**
+ * "+ Add Wallet" — links a second (third, ...) wallet to the CURRENT
+ * account instead of creating a new one. Uses /auth/link-wallet, which the
+ * server only accepts when the SIWE message's statement explicitly names
+ * this account id (proves the caller already knows which account they're
+ * extending, not blindly replaying a login message as a link).
+ */
+async function linkAdditionalWallet() {
+  clearAddWalletError();
+  if (!window.ethereum) {
+    showAddWalletError('No wallet extension found.');
+    return;
+  }
+  addWalletBtn.disabled = true;
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const address = await checksumAddress(accounts[0]);
+    const { nonce } = await api('/auth/nonce');
+    const { domain, origin } = siweDomainAndOrigin();
+    const message = buildSiweMessage({
+      domain,
+      address,
+      statement: `Link this wallet to my Waypoint account (${myAccountId}).`,
+      uri: origin,
+      chainId: 1,
+      nonce,
+      issuedAt: new Date().toISOString(),
+    });
+    const signature = await window.ethereum.request({ method: 'personal_sign', params: [message, address] });
+    await api('/auth/link-wallet', { method: 'POST', body: JSON.stringify({ message, signature }) });
+    walletDataLoaded = false;
+    chatWalletsPanelLoaded = false;
+    await refreshAccount();
+    await loadLinkedWallets();
+  } catch (err) {
+    console.error(err);
+    showAddWalletError(`Link failed: ${err.message}`);
+  } finally {
+    addWalletBtn.disabled = false;
+  }
+}
+
+function showAddWalletError(text) {
+  let node = document.getElementById('addWalletError');
+  if (!node) {
+    node = el(`<div class="side-note" id="addWalletError" style="color: var(--danger); margin-top: 8px;"></div>`);
+    addWalletBtn.parentNode.appendChild(node);
+  }
+  node.textContent = text;
+}
+function clearAddWalletError() {
+  const node = document.getElementById('addWalletError');
+  if (node) node.remove();
+}
+
+async function refreshAccount() {
+  try {
+    const me = await api('/auth/me');
+    activeAddress = me.wallets[0]?.address;
+    linkedWallets = me.wallets;
+    myAccountId = me.accountId;
+    statusDot.classList.add('on');
+    statusText.textContent = 'Connected';
+    loggedOutView.style.display = 'none';
+    loggedInView.style.display = 'block';
+    activeWalletAddr.textContent = activeAddress;
+    navSection.style.display = 'block';
+    sessionsSection.style.display = 'block';
+    goalInput.disabled = false;
+    goalInput.placeholder = 'State a goal, e.g. "consolidate my assets into the best-yielding protocol"…';
+    sendBtn.disabled = false;
+    topbarTitle.textContent = 'New goal';
+    newChatBtn.style.display = 'inline-block';
+    loadSessions();
+    if (!chatWalletsPanelLoaded) {
+      chatWalletsPanelLoaded = true;
+      loadChatWalletsPanel();
+    }
+  } catch {
+    statusDot.classList.remove('on');
+    statusText.textContent = 'Not connected';
+    loggedOutView.style.display = 'block';
+    loggedInView.style.display = 'none';
+    navSection.style.display = 'none';
+    sessionsSection.style.display = 'none';
+    goalInput.disabled = true;
+    goalInput.placeholder = 'Connect your wallet first…';
+    sendBtn.disabled = true;
+    topbarTitle.textContent = 'Sign in to start';
+    newChatBtn.style.display = 'none';
+  }
+}
+
+function shortAddr(a) {
+  return a.slice(0, 6) + '…' + a.slice(-4);
+}
+
+/** Bankr-style: chain list (left) + selected chain's token table (right). Renders into `container`. */
+/** Caps the visible decimal noise on a raw on-chain amount (e.g. "0.054813562105833304" ETH) without hiding real precision on larger balances. */
+function fmtTokenAmount(n) {
+  if (n === 0) return '0';
+  return n.toLocaleString(undefined, { maximumFractionDigits: 6 });
+}
+
+/** Token cell: logo (falls back to a monogram dot if missing/broken) + escaped symbol (a token's symbol/name is attacker-controlled on-chain data — never trust it unescaped) + a copy-contract-address button for anything that isn't the native gas token. */
+function tokenSymbolCellHtml(t) {
+  const initial = escapeHtml((t.token || '?').slice(0, 1).toUpperCase());
+  const logo = t.logo
+    ? `<img class="token-logo" src="${escapeHtml(t.logo)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><span class="token-logo-fallback" style="display:none;">${initial}</span>`
+    : `<span class="token-logo-fallback">${initial}</span>`;
+  const copyBtn = t.tokenAddress
+    ? `<button class="token-addr-copy" data-address="${escapeHtml(t.tokenAddress)}" title="Copy contract address" aria-label="Copy contract address">⧉</button>`
+    : '';
+  return `<span class="token-cell">${logo}<span>${escapeHtml(t.token)}</span>${copyBtn}</span>`;
+}
+
+/** consolidateFrom: pass the wallet's own address to show a "Send →" action per token row (client-side signed transfer to one of the account's execution wallets). Omit for execution wallets — sending from an execution wallet to itself makes no sense here. */
+function renderPortfolioLayout(container, balances, { consolidateFrom } = {}) {
+  container.innerHTML = '';
+  const chainListEl = el(`<div class="chain-list"></div>`);
+  const tokenTableEl = el(`<div class="token-table"></div>`);
+  container.appendChild(chainListEl);
+  container.appendChild(tokenTableEl);
+
+  const byChain = {};
+  for (const b of balances) {
+    (byChain[b.chain] = byChain[b.chain] || []).push(b);
+  }
+  const chainTotals = SUPPORTED_CHAINS.map((c) => ({
+    ...c,
+    total: (byChain[c.key] || []).reduce((sum, b) => sum + b.usdValue, 0),
+  }));
+  const firstNonZero = chainTotals.find((c) => c.total > 0);
+  let selected = (firstNonZero || chainTotals[0]).key;
+
+  function renderTokenTable() {
+    const tokens = byChain[selected] || [];
+    if (!tokens.length) {
+      tokenTableEl.innerHTML = `<div class="empty-hint">No balance on this chain.</div>`;
+      return;
+    }
+    const sorted = [...tokens].sort((a, b) => b.usdValue - a.usdValue);
+    const nonZero = sorted.filter((t) => t.usdValue > 0);
+    const zero = sorted.filter((t) => t.usdValue === 0);
+    const showZero = tokenTableEl.dataset.showZero === 'true';
+    const visible = showZero ? sorted : nonZero;
+
+    const rowHtml = (t) => `<tr><td class="t-symbol">${tokenSymbolCellHtml(t)}</td><td>${fmtTokenAmount(t.amount)}</td><td>$${t.usdValue.toFixed(2)}</td>${
+      consolidateFrom ? `<td><button class="copy-btn consolidate-btn">Send →</button></td>` : ''
+    }</tr>`;
+
+    tokenTableEl.innerHTML = `<table>
+      <thead><tr><th>Token</th><th>Balance</th><th>Value</th>${consolidateFrom ? '<th></th>' : ''}</tr></thead>
+      <tbody>${visible.map(rowHtml).join('')}</tbody>
+    </table>${zero.length ? `<button class="zero-toggle-btn">${showZero ? 'Hide' : 'Show'} ${zero.length} zero-value token${zero.length > 1 ? 's' : ''}</button>` : ''}`;
+
+    tokenTableEl.querySelectorAll('.token-addr-copy').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(btn.dataset.address);
+      });
+    });
+    if (consolidateFrom) {
+      tokenTableEl.querySelectorAll('tbody tr').forEach((tr, i) => {
+        tr.querySelector('.consolidate-btn').addEventListener('click', () => toggleConsolidateForm(tr, consolidateFrom, visible[i]));
+      });
+    }
+    const toggleBtn = tokenTableEl.querySelector('.zero-toggle-btn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        tokenTableEl.dataset.showZero = showZero ? 'false' : 'true';
+        renderTokenTable();
+      });
+    }
+  }
+  function renderChainList() {
+    chainListEl.innerHTML = '';
+    for (const c of chainTotals) {
+      const row = el(`<div class="chain-row${c.key === selected ? ' selected' : ''}">
+        <span class="chain-name"><span class="chain-dot"></span>${c.label}</span>
+        <span>$${c.total.toFixed(2)}</span>
+      </div>`);
+      row.addEventListener('click', () => {
+        selected = c.key;
+        renderChainList();
+        renderTokenTable();
+      });
+      chainListEl.appendChild(row);
+    }
+  }
+  renderChainList();
+  renderTokenTable();
+}
+
+function fmtUsd(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? `$${value.toFixed(2)}` : '—';
+}
+
+/** Protocol-native positions are rendered separately from liquid token
+ * balances. An aToken is evidence of an Aave supply, not a second spendable
+ * token row; debt tokens are liabilities and must never be hidden just
+ * because an indexer omitted them from wallet discovery. */
+function renderDefiPositions(container, data) {
+  const markets = data?.markets || [];
+  if (!markets.length) {
+    container.innerHTML = `<div class="defi-title-row"><span class="defi-title">DeFi positions</span></div><div class="defi-empty">No Aave supply or borrow positions found.</div>`;
+    return;
+  }
+  const summary = data.summary || {};
+  const marketHtml = markets.map((market) => {
+    const rows = market.assets.flatMap((asset) => {
+      const supply = asset.supplied > 0 ? [`<div class="defi-position-row">
+        <span class="defi-side supply">Supply</span>
+        <span><span class="defi-asset">${escapeHtml(asset.symbol)}</span><span class="defi-sub">${asset.usedAsCollateral ? 'Collateral enabled' : 'Not collateral'} · ${shortAddr(asset.assetAddress)}</span></span>
+        <span>${fmtTokenAmount(asset.supplied)}<span class="defi-sub">${fmtUsd(asset.suppliedUsd)}</span></span>
+        <span class="defi-rate">${asset.supplyApy.toFixed(2)}% APY</span>
+      </div>`] : [];
+      const borrow = asset.borrowed > 0 ? [`<div class="defi-position-row">
+        <span class="defi-side borrow">Borrow</span>
+        <span><span class="defi-asset">${escapeHtml(asset.symbol)}</span><span class="defi-sub">Variable debt · ${shortAddr(asset.assetAddress)}</span></span>
+        <span>${fmtTokenAmount(asset.borrowed)}<span class="defi-sub">${fmtUsd(asset.borrowedUsd)}</span></span>
+        <span class="defi-rate">${asset.variableBorrowApr.toFixed(2)}% APR</span>
+      </div>`] : [];
+      return [...supply, ...borrow];
+    }).join('');
+    const health = market.noDebt ? '∞' : market.healthFactor?.toFixed(3) || '—';
+    return `<div class="defi-market">
+      <div class="defi-market-head">
+        <div class="defi-market-name">Aave V3 <span class="defi-market-chain">${escapeHtml(chainLabel(market.chain))}</span></div>
+        <a class="defi-open" href="${escapeHtml(market.officialUrl)}" target="_blank" rel="noopener noreferrer">Open in Aave ↗</a>
+      </div>
+      <div class="defi-stats">
+        <div class="defi-stat"><span class="defi-stat-label">Supplied</span><span class="defi-stat-value">${fmtUsd(market.suppliedUsd)}</span></div>
+        <div class="defi-stat"><span class="defi-stat-label">Borrowed</span><span class="defi-stat-value">${fmtUsd(market.borrowedUsd)}</span></div>
+        <div class="defi-stat"><span class="defi-stat-label">Net</span><span class="defi-stat-value">${fmtUsd(market.netUsd)}</span></div>
+        <div class="defi-stat"><span class="defi-stat-label">Health factor</span><span class="defi-stat-value">${health}</span></div>
+      </div>
+      ${rows}
+    </div>`;
+  }).join('');
+  container.innerHTML = `<div class="defi-title-row">
+    <span class="defi-title">DeFi positions</span>
+    <span class="defi-summary">${fmtUsd(summary.suppliedUsd)} supplied · ${fmtUsd(summary.borrowedUsd)} borrowed · ${fmtUsd(summary.netUsd)} net</span>
+  </div>${marketHtml}`;
+}
+
+let _viemModule = null;
+async function loadViem() {
+  if (!_viemModule) _viemModule = await import('https://esm.sh/viem@2.55.13');
+  return _viemModule;
+}
+
+const ERC20_TRANSFER_ABI = [{
+  name: 'transfer', type: 'function', stateMutability: 'nonpayable',
+  inputs: [{ name: 'to', type: 'address' }, { name: 'amount', type: 'uint256' }],
+  outputs: [{ name: '', type: 'bool' }],
+}];
+
+/**
+ * Inline "send to execution wallet" form on a linked wallet's token row.
+ * Client-side signed only — our backend holds no key for a linked wallet, so
+ * this asks the browser wallet extension to sign directly, the same way
+ * linkAdditionalWallet() does for SIWE.
+ */
+function toggleConsolidateForm(tr, fromAddress, token) {
+  const existing = tr.nextElementSibling;
+  if (existing && existing.classList.contains('consolidate-row')) {
+    existing.remove();
+    return;
+  }
+  // el() wraps its HTML in a <div>, which can't legally contain a <tr> — build
+  // the row element directly instead so browsers don't silently drop it.
+  const formRow = document.createElement('tr');
+  formRow.className = 'consolidate-row';
+  const knownDests = [
+    ...cachedExecWallets.map((w) => ({ label: w.label, address: w.address })),
+    ...linkedWallets.filter((w) => w.address.toLowerCase() !== fromAddress.toLowerCase()).map((w) => ({ label: w.label, address: w.address })),
+  ];
+  formRow.innerHTML = `<td colspan="4">
+    <div class="consolidate-form">
+      <div class="form-field" style="min-width:280px;">
+        <label>To address</label>
+        <input class="cf-dest" type="text" list="cfDestList" placeholder="0x… — any address" />
+        <datalist id="cfDestList">${knownDests.map((w) => `<option value="${w.address}">${escapeHtml(w.label)}</option>`).join('')}</datalist>
+      </div>
+      <div class="form-field">
+        <label>Amount (${escapeHtml(token.token)})</label>
+        <input class="cf-amount" type="number" step="any" value="${token.amount}" />
+      </div>
+      <button class="btn primary cf-send" style="width:auto; padding:9px 18px;">Send</button>
+      <button class="btn small cf-cancel" style="width:auto;">Cancel</button>
+    </div>
+    <div class="consolidate-status"></div>
+  </td>`;
+  tr.after(formRow);
+  formRow.querySelector('.cf-cancel').addEventListener('click', () => formRow.remove());
+  formRow.querySelector('.cf-send').addEventListener('click', async () => {
+    const statusEl = formRow.querySelector('.consolidate-status');
+    const sendBtn = formRow.querySelector('.cf-send');
+    const destInput = formRow.querySelector('.cf-dest').value.trim();
+    const amountStr = formRow.querySelector('.cf-amount').value;
+    if (!amountStr || Number(amountStr) <= 0) {
+      statusEl.textContent = 'Enter a positive amount.';
+      return;
+    }
+    sendBtn.disabled = true;
+    statusEl.textContent = 'Waiting for wallet confirmation…';
+    let destAddress;
+    try {
+      if (!window.ethereum) throw new Error('No wallet extension found.');
+      destAddress = await checksumAddress(destInput);
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      const connected = accounts[0] ? await checksumAddress(accounts[0]) : null;
+      if (!connected || connected.toLowerCase() !== fromAddress.toLowerCase()) {
+        throw new Error(`Your wallet extension is on a different account — switch to ${shortAddr(fromAddress)} and try again.`);
+      }
+      const chainMeta = SUPPORTED_CHAINS.find((c) => c.key === token.chain);
+      if (chainMeta?.chainId) {
+        const hexChainId = `0x${chainMeta.chainId.toString(16)}`;
+        try {
+          await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: hexChainId }] });
+        } catch (switchErr) {
+          throw new Error(`Switch your wallet to ${chainMeta.label} and try again (${switchErr.message}).`);
+        }
+      }
+      const { parseUnits, encodeFunctionData, numberToHex } = await loadViem();
+      const rawAmount = parseUnits(amountStr, token.decimals);
+      let tx;
+      if (token.tokenAddress) {
+        tx = {
+          from: fromAddress,
+          to: token.tokenAddress,
+          data: encodeFunctionData({ abi: ERC20_TRANSFER_ABI, functionName: 'transfer', args: [destAddress, rawAmount] }),
+        };
+      } else {
+        tx = { from: fromAddress, to: destAddress, value: numberToHex(rawAmount) };
+      }
+      const txHash = await window.ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
+      statusEl.innerHTML = `Sent. <span class="mono">${txHash}</span>`;
+      sendBtn.remove();
+    } catch (err) {
+      statusEl.textContent = `Failed: ${err.message}`;
+      sendBtn.disabled = false;
+    }
+  });
+}
+
+async function loadExecutionWallets() {
+  execWalletsList.innerHTML = '<div class="empty-hint">Loading…</div>';
+  try {
+    const { wallets } = await api('/wallet/execution');
+    cachedExecWallets = wallets;
+    execWalletsList.innerHTML = '';
+    if (!wallets.length) {
+      execWalletsList.appendChild(el(`<div class="empty-hint">No execution wallets yet — create or import one to enable hands-free execution.</div>`));
+      return;
+    }
+    for (const w of wallets) {
+      const card = el(`<div class="wallet-section" style="background:var(--bg-card-2); margin-bottom:14px;">
+        <div class="wallet-section-head">
+          <h3 style="font-size:12.5px;" class="wallet-label">${escapeHtml(w.label)}</h3>
+          <div style="display:flex; gap:8px; flex-shrink:0;">
+            <button class="copy-btn rename-btn">Rename</button>
+            <button class="danger-btn">Export Private Key</button>
+          </div>
+        </div>
+        <div class="full-address-row">
+          <span class="addr-text">${w.address}</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+        <div class="export-area"></div>
+        <div class="balance-total" style="font-size:18px;">Loading…</div>
+        <div class="portfolio-layout"></div>
+        <div class="defi-area"><div class="defi-empty">Loading DeFi positions…</div></div>
+      </div>`);
+      execWalletsList.appendChild(card);
+      card.querySelector('.copy-btn:not(.rename-btn)').addEventListener('click', () => navigator.clipboard.writeText(w.address));
+      card.querySelector('.danger-btn').addEventListener('click', () => startExportFlow(card.querySelector('.export-area'), w));
+      card.querySelector('.rename-btn').addEventListener('click', () => {
+        startRenameFlow(card.querySelector('.wallet-label'), w.label, async (newLabel) => {
+          await api(`/wallet/execution/${w.walletId}/rename`, { method: 'POST', body: JSON.stringify({ label: newLabel }) });
+          chatWalletsPanelLoaded = false;
+          await loadExecutionWallets();
+        });
+      });
+      Promise.all([
+        api(`/wallet/portfolio?address=${w.address}`),
+        api(`/wallet/defi-positions?address=${w.address}`),
+      ])
+        .then(([p, defi]) => {
+          card.querySelector('.balance-total').textContent = `${fmtUsd(p.totalUsd + defi.summary.netUsd)} net worth`;
+          renderPortfolioLayout(card.querySelector('.portfolio-layout'), p.balances);
+          renderDefiPositions(card.querySelector('.defi-area'), defi);
+        })
+        .catch((err) => { card.querySelector('.balance-total').textContent = `Failed to load: ${err.message}`; });
+    }
+  } catch (err) {
+    execWalletsList.innerHTML = `<div class="empty-hint">Failed to load: ${err.message}</div>`;
+  }
+}
+
+async function createExecutionWallet() {
+  createExecWalletBtn.disabled = true;
+  try {
+    await api('/wallet/execution', { method: 'POST' });
+    chatWalletsPanelLoaded = false;
+    await loadExecutionWallets();
+  } catch (err) {
+    alert(`Failed to create wallet: ${err.message}`);
+  } finally {
+    createExecWalletBtn.disabled = false;
+  }
+}
+
+function closeImportExecutionWallet() {
+  importExecWalletForm.classList.remove('open');
+  importExecWalletForm.reset();
+  importExecWalletError.textContent = '';
+}
+
+async function importExecutionWallet(e) {
+  e.preventDefault();
+  importExecWalletError.textContent = '';
+  confirmImportExecWalletBtn.disabled = true;
+  try {
+    await api('/wallet/execution/import', {
+      method: 'POST',
+      body: JSON.stringify({
+        privateKey: importExecWalletKey.value.trim(),
+        label: importExecWalletLabel.value.trim() || undefined,
+      }),
+    });
+    closeImportExecutionWallet();
+    chatWalletsPanelLoaded = false;
+    await loadExecutionWallets();
+  } catch (err) {
+    importExecWalletError.textContent = `Import failed: ${err.message}`;
+  } finally {
+    confirmImportExecWalletBtn.disabled = false;
+  }
+}
+
+/** Swaps labelEl's content for an inline text input; Enter/blur saves via onSave(newLabel), Escape cancels. Used for both execution and linked wallet renaming. */
+function startRenameFlow(labelEl, currentLabel, onSave) {
+  const original = labelEl.innerHTML;
+  labelEl.innerHTML = '';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'rename-input';
+  input.value = currentLabel;
+  labelEl.appendChild(input);
+  input.focus();
+  input.select();
+  let done = false;
+  const finish = async (save) => {
+    if (done) return;
+    done = true;
+    const newLabel = input.value.trim();
+    if (!save || !newLabel || newLabel === currentLabel) {
+      labelEl.innerHTML = original;
+      return;
+    }
+    try {
+      await onSave(newLabel);
+    } catch (err) {
+      alert(`Rename failed: ${err.message}`);
+      labelEl.innerHTML = original;
+    }
+  };
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') finish(true);
+    if (e.key === 'Escape') finish(false);
+  });
+  input.addEventListener('blur', () => finish(true));
+}
+
+/** Two-step reveal: warning + explicit confirmation first, key is never fetched until confirmed, and is cleared from the DOM on hide (not just visually toggled). */
+function startExportFlow(container, wallet) {
+  if (container.dataset.open === 'true') {
+    container.innerHTML = '';
+    container.dataset.open = 'false';
+    return;
+  }
+  container.dataset.open = 'true';
+  container.innerHTML = `<div class="export-warning">
+    <div class="ew-title">⚠ This reveals full control of this wallet</div>
+    <ul>
+      <li>Anyone with this key can move every asset in this wallet, on every chain, permanently.</li>
+      <li>Waypoint will never ask you for it. Treat it exactly like a password to your funds.</li>
+      <li>Once revealed, do not paste it anywhere except your own wallet software.</li>
+    </ul>
+    <button class="danger-btn" id="ewConfirm">I understand — reveal it</button>
+  </div>`;
+  container.querySelector('#ewConfirm').addEventListener('click', async () => {
+    container.innerHTML = `<div class="export-warning">Fetching…</div>`;
+    try {
+      const { privateKey } = await api(`/wallet/execution/${wallet.walletId}/export`, { method: 'POST' });
+      container.innerHTML = `<div class="export-warning">
+        <div class="ew-title">Private key for ${escapeHtml(wallet.label)}</div>
+        <div class="export-key-box" id="ewKey">${escapeHtml(privateKey)}</div>
+        <div class="form-actions">
+          <button class="copy-btn" id="ewCopy">Copy</button>
+          <button class="danger-btn" id="ewHide">Hide</button>
+        </div>
+      </div>`;
+      container.querySelector('#ewCopy').addEventListener('click', () => navigator.clipboard.writeText(privateKey));
+      container.querySelector('#ewHide').addEventListener('click', () => {
+        container.innerHTML = '';
+        container.dataset.open = 'false';
+      });
+    } catch (err) {
+      container.innerHTML = `<div class="export-warning">Failed to export: ${err.message}</div>`;
+    }
+  });
+}
+
+async function loadLinkedWallets() {
+  linkedWalletsList.innerHTML = '';
+  if (!linkedWallets.length) {
+    linkedWalletsList.appendChild(el(`<div class="empty-hint">No wallets linked yet.</div>`));
+    return;
+  }
+  for (const w of linkedWallets) {
+    const address = w.address;
+    const row = el(`<div class="wallet-row">
+      <div class="wallet-dot"></div>
+      <div class="wallet-info">
+        <div><span class="wallet-label" style="font-size:12.5px; color:var(--text);" title="${address}">${escapeHtml(w.label)}</span> <span class="cw-addr">${shortAddr(address)}</span></div>
+        <div class="bal">Loading…</div>
+      </div>
+      <button class="copy-btn rename-btn">Rename</button>
+      <button class="copy-btn" data-addr="${address}">Copy</button>
+    </div>`);
+    const detail = el(`<div style="display:none; margin-bottom:14px;">
+      <div class="portfolio-layout"></div>
+      <div class="defi-area"><div class="defi-empty">Loading DeFi positions…</div></div>
+    </div>`);
+    linkedWalletsList.appendChild(row);
+    linkedWalletsList.appendChild(detail);
+
+    row.querySelector('.rename-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      startRenameFlow(row.querySelector('.wallet-label'), w.label, async (newLabel) => {
+        await api('/wallet/linked/rename', { method: 'POST', body: JSON.stringify({ address, label: newLabel }) });
+        // loadLinkedWallets() re-renders from the in-memory linkedWallets array — refreshAccount()
+        // re-fetches /auth/me to repopulate it with the new label before re-rendering.
+        chatWalletsPanelLoaded = false;
+        await refreshAccount();
+        await loadLinkedWallets();
+      });
+    });
+    row.querySelector('.copy-btn:not(.rename-btn)').addEventListener('click', (e) => {
+      e.stopPropagation();
+      navigator.clipboard.writeText(address);
+    });
+    let portfolioData = null;
+    let defiData = null;
+    row.addEventListener('click', () => {
+      const showing = detail.style.display !== 'none';
+      detail.style.display = showing ? 'none' : 'block';
+      if (!showing && portfolioData) renderPortfolioLayout(detail.querySelector('.portfolio-layout'), portfolioData.balances, { consolidateFrom: address });
+      if (!showing && defiData) renderDefiPositions(detail.querySelector('.defi-area'), defiData);
+    });
+
+    Promise.all([
+      api(`/wallet/portfolio?address=${address}`),
+      api(`/wallet/defi-positions?address=${address}`),
+    ])
+      .then(([p, defi]) => {
+        portfolioData = p;
+        defiData = defi;
+        row.querySelector('.bal').textContent = `${fmtUsd(p.totalUsd + defi.summary.netUsd)} net worth`;
+      })
+      .catch(() => { row.querySelector('.bal').textContent = 'Failed to load'; });
+  }
+}
+
+function chainLabel(key) {
+  return SUPPORTED_CHAINS.find((c) => c.key === key)?.label || key;
+}
+
+function fmtExecRow(e) {
+  const badge = e.success ? `<span class="el-badge ok">OK</span>` : `<span class="el-badge fail">FAILED</span>`;
+  const time = new Date(e.firedAt).toLocaleString();
+  const detail = e.success
+    ? `${e.amountIn ?? ''}${e.outputSymbol ? ` ${e.outputSymbol}` : ''}${e.amountOut ? ` → ${e.amountOut} ${e.outputSymbol}` : ''}` +
+      (e.txHash ? ` — <span class="mono">${e.txHash}</span>` : '') +
+      (e.gasUsed ? ` — gas ${e.gasUsed}` : '')
+    : escapeHtml(e.errorMessage || 'unknown error');
+  return `<div class="exec-log-row">${badge}<span class="el-detail">${time}<br/>${detail}</span></div>`;
+}
+
+async function toggleExecLog(card, triggerId) {
+  const existing = card.querySelector('.exec-log');
+  if (existing) { existing.remove(); return; }
+  const logEl = document.createElement('div');
+  logEl.className = 'exec-log';
+  logEl.innerHTML = '<div class="empty-hint">Loading execution history…</div>';
+  card.appendChild(logEl);
+  try {
+    const { executions } = await api(`/triggers/${triggerId}/executions`);
+    logEl.innerHTML = executions.length
+      ? executions.map(fmtExecRow).join('')
+      : '<div class="empty-hint">No fires yet.</div>';
+  } catch (err) {
+    logEl.innerHTML = `<div class="empty-hint">Failed to load history: ${err.message}</div>`;
+  }
+}
+
+function renderHealthFactorCard(t) {
+  const c = t.config;
+  const card = el(`<div class="trigger-card">
+    <div class="tc-head clickable">
+      <div>
+        <div class="tc-type">Health-Factor Repay</div>
+        <span class="tc-title">${chainLabel(c.chain)} — health factor &lt; ${c.threshold}</span>
+      </div>
+      <span class="tc-status ${t.active ? 'ok' : 'warn'}">${t.active ? 'watching' : 'paused'}</span>
+    </div>
+    <div class="tc-row"><span>Current health factor</span><span class="hf-live">loading…</span></div>
+    <div class="tc-row"><span>On breach, repay</span><span>${c.repayPercent}% of ${escapeHtml(c.repayAsset)} debt</span></div>
+    <div class="tc-row"><span>Last checked</span><span>${t.lastCheckedAt ? new Date(t.lastCheckedAt).toLocaleTimeString() : 'never yet'}</span></div>
+    <div class="tc-row"><span>Last fired</span><span>${t.lastFiredAt ? new Date(t.lastFiredAt).toLocaleString() : 'never'}</span></div>
+    <div class="tc-row tc-feedback" style="display:none;"><span>Check result</span><span></span></div>
+    ${t.completionProgress ? `<div class="tc-row"><span>Stop condition</span><span>${escapeHtml(t.completionProgress)}</span></div>` : ''}
+    <div class="tc-actions">
+      <button class="btn small tc-check">Check now</button>
+      <button class="btn small tc-toggle">${t.active ? 'Pause' : 'Resume'}</button>
+      <button class="danger-btn tc-delete">Delete</button>
+    </div>
+  </div>`);
+  const wallet = cachedExecWallets.find((w) => w.walletId === t.executionWalletId);
+  if (wallet) {
+    api(`/wallet/health-factor?address=${wallet.address}&chain=${c.chain}`)
+      .then((hf) => { card.querySelector('.hf-live').textContent = hf.noDebt ? 'no debt (∞)' : hf.healthFactor.toFixed(3); })
+      .catch(() => { card.querySelector('.hf-live').textContent = 'unavailable'; });
+  }
+  card.querySelector('.tc-head').addEventListener('click', () => toggleExecLog(card, t.triggerId));
+  card.querySelector('.tc-check').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const button = e.currentTarget;
+    button.disabled = true;
+    button.textContent = 'Checking…';
+    try {
+      const result = await api(`/triggers/${t.triggerId}/check`, { method: 'POST' });
+      const feedback = card.querySelector('.tc-feedback');
+      feedback.style.display = '';
+      feedback.lastElementChild.textContent = result.check.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Check now';
+    }
+  });
+  card.querySelector('.tc-toggle').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await api(`/triggers/${t.triggerId}/active`, { method: 'POST', body: JSON.stringify({ active: !t.active }) });
+    loadTriggers();
+  });
+  card.querySelector('.tc-delete').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (!confirm('Delete this automation and its local execution history? On-chain transactions cannot be undone.')) return;
+    await api(`/triggers/${t.triggerId}`, { method: 'DELETE' });
+    loadTriggers();
+  });
+  return card;
+}
+
+function renderDcaCard(t) {
+  const c = t.config;
+  const cadence = c.intervalMinutes ? `every ${c.intervalMinutes} min` : `daily @ ${escapeHtml(c.timeOfDayUtc)} UTC`;
+  const status = t.configError ? 'invalid' : t.completionMet ? 'completed' : t.active ? 'scheduled' : 'paused';
+  const statusClass = t.configError ? 'warn' : t.completionMet || t.active ? 'ok' : 'warn';
+  const card = el(`<div class="trigger-card">
+    <div class="tc-head clickable">
+      <div>
+        <div class="tc-type">DCA Buy</div>
+        <span class="tc-title">${chainLabel(c.chain)} — ${c.amountPerBuy} ${escapeHtml(c.tokenIn)} → ${escapeHtml(c.tokenOut)} ${cadence}</span>
+      </div>
+      <span class="tc-status ${statusClass}">${status}</span>
+    </div>
+    <div class="tc-row"><span>Last checked</span><span>${t.lastCheckedAt ? new Date(t.lastCheckedAt).toLocaleTimeString() : 'never yet'}</span></div>
+    <div class="tc-row"><span>Last fired</span><span>${t.lastFiredAt ? new Date(t.lastFiredAt).toLocaleString() : 'never'}</span></div>
+    <div class="tc-row tc-feedback" style="display:none;"><span>Check result</span><span></span></div>
+    ${t.configError ? `<div class="tc-row"><span>Configuration</span><span style="color:var(--danger);">${escapeHtml(t.configError)}</span></div>` : ''}
+    ${t.completionProgress ? `<div class="tc-row"><span>Stop condition</span><span>${escapeHtml(t.completionProgress)}</span></div>` : ''}
+    <div class="tc-actions">
+      <button class="btn small tc-check">Check status</button>
+      ${!t.completionMet && !t.configError ? `<button class="btn small tc-toggle">${t.active ? 'Pause' : 'Resume'}</button>` : ''}
+      <button class="danger-btn tc-delete">Delete</button>
+    </div>
+  </div>`);
+  card.querySelector('.tc-head').addEventListener('click', () => toggleExecLog(card, t.triggerId));
+  card.querySelector('.tc-check').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const button = e.currentTarget;
+    button.disabled = true;
+    button.textContent = 'Checking…';
+    try {
+      const result = await api(`/triggers/${t.triggerId}/check`, { method: 'POST' });
+      const feedback = card.querySelector('.tc-feedback');
+      feedback.style.display = '';
+      feedback.lastElementChild.textContent = result.check.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Check status';
+    }
+  });
+  const toggle = card.querySelector('.tc-toggle');
+  if (toggle) toggle.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await api(`/triggers/${t.triggerId}/active`, { method: 'POST', body: JSON.stringify({ active: !t.active }) });
+      loadTriggers();
+    });
+  card.querySelector('.tc-delete').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (!confirm('Delete this automation and its local execution history? On-chain transactions cannot be undone.')) return;
+    await api(`/triggers/${t.triggerId}`, { method: 'DELETE' });
+    loadTriggers();
+  });
+  return card;
+}
+
+async function loadTriggers() {
+  triggersList.innerHTML = '<div class="empty-hint">Loading…</div>';
+  try {
+    const { triggers } = await api('/triggers');
+    triggersList.innerHTML = '';
+    if (!triggers.length) {
+      triggersList.appendChild(el(`<div class="empty-hint">No automations yet — pick a template above.</div>`));
+      return;
+    }
+    for (const t of triggers) {
+      const card = t.triggerType === 'dca' ? renderDcaCard(t) : renderHealthFactorCard(t);
+      triggersList.appendChild(card);
+    }
+  } catch (err) {
+    triggersList.innerHTML = `<div class="empty-hint">Failed to load: ${err.message}</div>`;
+  }
+}
+
+async function loadTrustList() {
+  trustList.innerHTML = '<div class="empty-hint">Loading…</div>';
+  try {
+    const { trusted } = await api('/trust');
+    trustList.innerHTML = '';
+    if (!trusted.length) {
+      trustList.appendChild(el(`<div class="empty-hint">Nothing trusted yet — a custom_call step you confirm gets added here automatically.</div>`));
+      return;
+    }
+    for (const t of trusted) {
+      const card = el(`<div class="trigger-card">
+        <div class="tc-head">
+          <span class="tc-title mono" style="word-break:break-all;">${escapeHtml(t.target)}</span>
+        </div>
+        <div class="tc-row"><span class="mono" style="word-break:break-all;">${escapeHtml(t.functionSignature)}</span></div>
+        <div class="tc-row"><span>Trusted since</span><span>${new Date(t.createdAt).toLocaleString()}</span></div>
+        <div class="tc-actions">
+          <button class="danger-btn">Revoke</button>
+        </div>
+      </div>`);
+      card.querySelector('.tc-actions button').addEventListener('click', async () => {
+        await api('/trust/revoke', { method: 'POST', body: JSON.stringify({ target: t.target, functionSignature: t.functionSignature }) });
+        loadTrustList();
+      });
+      trustList.appendChild(card);
+    }
+  } catch (err) {
+    trustList.innerHTML = `<div class="empty-hint">Failed to load: ${err.message}</div>`;
+  }
+}
+
+async function selectTemplate(type) {
+  if (!cachedExecWallets.length) {
+    alert('Create or import an execution wallet first (Wallet tab) — automations run from one.');
+    return;
+  }
+  triggerCreateForm.style.display = 'block';
+  if (type === 'health_factor') renderHealthFactorForm();
+  else renderDcaForm();
+}
+
+function walletAddress(walletId) {
+  return cachedExecWallets.find((w) => w.walletId === walletId)?.address;
+}
+
+function renderHealthFactorForm() {
+  const aaveChains = SUPPORTED_CHAINS.filter((c) => c.aave);
+  triggerCreateForm.innerHTML = `<div class="wallet-section" style="background:var(--bg-card-2);">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Execution wallet</label>
+        <select id="tfWallet">${cachedExecWallets.map((w) => `<option value="${w.walletId}">${escapeHtml(w.label)} (${shortAddr(w.address)})</option>`).join('')}</select>
+      </div>
+      <div class="form-field">
+        <label>Chain</label>
+        <select id="tfChain">${aaveChains.map((c) => `<option value="${c.key}">${c.label}</option>`).join('')}</select>
+      </div>
+      <div class="form-field">
+        <label>Repay asset</label>
+        <input id="tfAsset" type="text" value="USDC" />
+      </div>
+    </div>
+    <div class="context-box" id="tfContext">Loading your current position…</div>
+    <div class="form-grid" style="margin-top:10px;">
+      <div class="form-field">
+        <label>Repay if health factor below</label>
+        <input id="tfThreshold" type="number" step="0.01" value="1.3" />
+      </div>
+      <div class="form-field">
+        <label>Repay % of current debt</label>
+        <input id="tfPercent" type="number" step="1" min="1" max="100" value="50" />
+      </div>
+    </div>
+    <div class="context-box" id="tfPreview"></div>
+    <div class="form-grid" style="margin-top:10px;">
+      ${completionConditionFieldHtml()}
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" id="tfSubmit" style="width:auto; padding:9px 18px;">Create trigger</button>
+    </div>
+  </div>`;
+  wireCompletionConditionField(() => document.getElementById('tfAsset').value.trim().toUpperCase());
+
+  const ctxEl = document.getElementById('tfContext');
+  const previewEl = document.getElementById('tfPreview');
+  let lastAssetDebt = null;
+
+  function updatePreview() {
+    const percent = parseFloat(document.getElementById('tfPercent').value) || 0;
+    const asset = document.getElementById('tfAsset').value.trim().toUpperCase();
+    if (lastAssetDebt === null) { previewEl.innerHTML = ''; return; }
+    const repayAmount = lastAssetDebt * (percent / 100);
+    previewEl.innerHTML = `<div class="cb-row"><span>This trigger would repay</span><span>≈ ${repayAmount.toFixed(4)} ${asset}</span></div>`;
+  }
+
+  async function refreshContext() {
+    const walletId = document.getElementById('tfWallet').value;
+    const chain = document.getElementById('tfChain').value;
+    const asset = document.getElementById('tfAsset').value.trim();
+    const addr = walletAddress(walletId);
+    if (!addr || !chain || !asset) return;
+    ctxEl.textContent = 'Loading your current position…';
+    try {
+      const hf = await api(`/wallet/health-factor?address=${addr}&chain=${chain}&asset=${asset}`);
+      lastAssetDebt = hf.assetDebt ?? 0;
+      ctxEl.innerHTML = `
+        <div class="cb-row"><span>Current health factor</span><span>${hf.noDebt ? 'no debt (∞)' : hf.healthFactor.toFixed(3)}</span></div>
+        <div class="cb-row"><span>Total debt (all assets)</span><span>$${hf.totalDebtBase.toFixed(2)}</span></div>
+        <div class="cb-row"><span>Current ${escapeHtml(asset.toUpperCase())} debt</span><span>${lastAssetDebt.toFixed(4)} ${escapeHtml(asset.toUpperCase())}</span></div>`;
+      updatePreview();
+    } catch (err) {
+      ctxEl.textContent = `Couldn't load your position: ${err.message}`;
+      lastAssetDebt = null;
+    }
+  }
+
+  document.getElementById('tfWallet').addEventListener('change', refreshContext);
+  document.getElementById('tfChain').addEventListener('change', refreshContext);
+  document.getElementById('tfAsset').addEventListener('change', refreshContext);
+  document.getElementById('tfPercent').addEventListener('input', updatePreview);
+  refreshContext();
+
+  document.getElementById('tfSubmit').addEventListener('click', async () => {
+    const executionWalletId = document.getElementById('tfWallet').value;
+    const config = {
+      type: 'health_factor',
+      chain: document.getElementById('tfChain').value,
+      threshold: parseFloat(document.getElementById('tfThreshold').value),
+      repayAsset: document.getElementById('tfAsset').value.trim(),
+      repayPercent: parseFloat(document.getElementById('tfPercent').value),
+      completionCondition: readCompletionCondition(document.getElementById('tfAsset').value.trim().toUpperCase()),
+    };
+    try {
+      await api('/triggers', { method: 'POST', body: JSON.stringify({ executionWalletId, config }) });
+      triggerCreateForm.style.display = 'none';
+      templatePicker.querySelectorAll('.template-card').forEach((c) => c.classList.remove('selected'));
+      loadTriggers();
+    } catch (err) {
+      alert(`Failed to create trigger: ${err.message}`);
+    }
+  });
+}
+
+function renderDcaForm() {
+  triggerCreateForm.innerHTML = `<div class="wallet-section" style="background:var(--bg-card-2);">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Execution wallet</label>
+        <select id="tfWallet">${cachedExecWallets.map((w) => `<option value="${w.walletId}">${escapeHtml(w.label)} (${shortAddr(w.address)})</option>`).join('')}</select>
+      </div>
+      <div class="form-field">
+        <label>Chain</label>
+        <select id="tfChain">${SUPPORTED_CHAINS.map((c) => `<option value="${c.key}">${c.label}</option>`).join('')}</select>
+      </div>
+      <div class="form-field">
+        <label>Spend (funding asset)</label>
+        <input id="tfTokenIn" type="text" value="USDC" />
+      </div>
+      <div class="form-field">
+        <label>Buy (target asset)</label>
+        <input id="tfTokenOut" type="text" value="WETH" />
+      </div>
+      <div class="form-field">
+        <label>Amount per buy</label>
+        <input id="tfAmount" type="number" step="0.01" value="1" />
+      </div>
+      <div class="form-field">
+        <label>First time (UTC, optional)</label>
+        <input id="tfTime" type="time" />
+      </div>
+      <div class="form-field">
+        <label>Repeat every minutes (optional)</label>
+        <input id="tfInterval" type="number" min="1" step="1" placeholder="Daily at the time above" />
+      </div>
+    </div>
+    <div class="form-grid" style="margin-top:10px;">
+      ${completionConditionFieldHtml()}
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" id="tfSubmit" style="width:auto; padding:9px 18px;">Create trigger</button>
+    </div>
+  </div>`;
+  wireCompletionConditionField(() => document.getElementById('tfTokenIn').value.trim().toUpperCase());
+  document.getElementById('tfSubmit').addEventListener('click', async () => {
+    const executionWalletId = document.getElementById('tfWallet').value;
+    const config = {
+      type: 'dca',
+      chain: document.getElementById('tfChain').value,
+      tokenIn: document.getElementById('tfTokenIn').value.trim(),
+      tokenOut: document.getElementById('tfTokenOut').value.trim(),
+      amountPerBuy: parseFloat(document.getElementById('tfAmount').value),
+      timeOfDayUtc: document.getElementById('tfTime').value || undefined,
+      intervalMinutes: document.getElementById('tfInterval').value ? parseInt(document.getElementById('tfInterval').value, 10) : undefined,
+      completionCondition: readCompletionCondition(document.getElementById('tfTokenIn').value.trim().toUpperCase()),
+    };
+    try {
+      await api('/triggers', { method: 'POST', body: JSON.stringify({ executionWalletId, config }) });
+      triggerCreateForm.style.display = 'none';
+      templatePicker.querySelectorAll('.template-card').forEach((c) => c.classList.remove('selected'));
+      loadTriggers();
+    } catch (err) {
+      alert(`Failed to create trigger: ${err.message}`);
+    }
+  });
+}
+
+function completionConditionFieldHtml() {
+  return `<div class="form-field">
+      <label>Stop after (optional)</label>
+      <select id="tfCompletionType">
+        <option value="">Run indefinitely</option>
+        <option value="tx_count">A number of fires</option>
+        <option value="time_elapsed">A number of days</option>
+        <option value="token_amount_spent">A total token amount spent</option>
+        <option value="usd_spent">A total USD amount spent</option>
+      </select>
+    </div>
+    <div class="form-field" id="tfCompletionValueField" style="display:none;">
+      <label id="tfCompletionValueLabel">Value</label>
+      <input id="tfCompletionValue" type="number" step="any" min="0" />
+    </div>`;
+}
+
+function wireCompletionConditionField(spentTokenGetter) {
+  const typeSel = document.getElementById('tfCompletionType');
+  const valueField = document.getElementById('tfCompletionValueField');
+  const valueLabel = document.getElementById('tfCompletionValueLabel');
+  typeSel.addEventListener('change', () => {
+    const t = typeSel.value;
+    if (!t) { valueField.style.display = 'none'; return; }
+    valueField.style.display = 'block';
+    valueLabel.textContent = {
+      tx_count: 'Number of fires',
+      time_elapsed: 'Number of days',
+      token_amount_spent: `Total ${spentTokenGetter() || 'token'} spent`,
+      usd_spent: 'Total USD spent',
+    }[t];
+  });
+}
+
+function readCompletionCondition(spentToken) {
+  const type = document.getElementById('tfCompletionType').value;
+  if (!type) return null;
+  const value = parseFloat(document.getElementById('tfCompletionValue').value);
+  if (!Number.isFinite(value) || value <= 0) return null;
+  if (type === 'tx_count') return { type, count: value };
+  if (type === 'time_elapsed') return { type, days: value };
+  if (type === 'token_amount_spent') return { type, token: spentToken, amount: value };
+  if (type === 'usd_spent') return { type, amountUsd: value };
+  return null;
+}
+
+function switchView(view) {
+  navChat.classList.toggle('active', view === 'chat');
+  navWallet.classList.toggle('active', view === 'wallet');
+  navAutomations.classList.toggle('active', view === 'automations');
+  navTrust.classList.toggle('active', view === 'trust');
+  chatView.style.display = view === 'chat' ? 'flex' : 'none';
+  walletView.classList.toggle('active', view === 'wallet');
+  automationsView.classList.toggle('active', view === 'automations');
+  trustView.classList.toggle('active', view === 'trust');
+  if (view === 'chat') {
+    loadSessions();
+    if (!chatWalletsPanelLoaded) {
+      chatWalletsPanelLoaded = true;
+      loadChatWalletsPanel();
+    }
+  }
+  if (view === 'wallet' && !walletDataLoaded) {
+    walletDataLoaded = true;
+    loadExecutionWallets();
+    loadLinkedWallets();
+  }
+  if (view === 'automations' && !automationsDataLoaded) {
+    automationsDataLoaded = true;
+    loadExecutionWallets();
+    loadTriggers();
+  }
+  if (view === 'trust' && !trustDataLoaded) {
+    trustDataLoaded = true;
+    loadTrustList();
+  }
+}
+
+async function signOut() {
+  await api('/auth/logout', { method: 'POST' });
+  sessionId = null;
+  renderedAutomationUpdateIds = new Set();
+  walletDataLoaded = false;
+  trustDataLoaded = false;
+  automationsDataLoaded = false;
+  chatWalletsPanelLoaded = false;
+  switchView('chat');
+  messages.innerHTML = '';
+  messages.appendChild(emptyState);
+  await refreshAccount();
+}
+
+function startNewChat() {
+  sessionId = null;
+  renderedAutomationUpdateIds = new Set();
+  messages.innerHTML = '';
+  messages.appendChild(emptyState);
+  sessionsList.querySelectorAll('.session-row').forEach((r) => r.classList.remove('active'));
+}
+
+function scrollToBottom() {
+  messages.scrollTop = messages.scrollHeight;
+}
+
+/** GET /chat/sessions — renders the "Recent Chats" sidebar list, newest first, current session highlighted. */
+async function loadSessions() {
+  let sessions;
+  try {
+    ({ sessions } = await api('/chat/sessions'));
+  } catch {
+    return;
+  }
+  if (!sessions.length) {
+    sessionsList.innerHTML = '<div class="cw-empty">No past chats yet</div>';
+    return;
+  }
+  sessionsList.innerHTML = '';
+  sessions.forEach((s) => {
+    const row = el(`<div class="session-row ${s.sessionId === sessionId ? 'active' : ''}" data-session-id="${s.sessionId}">
+      <span class="sr-title">${escapeHtml(s.title)}</span>
+      <button class="sr-delete" title="Delete chat">✕</button>
+    </div>`);
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('.sr-delete')) return;
+      loadSession(s.sessionId);
+    });
+    row.querySelector('.sr-delete').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await api(`/chat/sessions/${s.sessionId}`, { method: 'DELETE' });
+      if (sessionId === s.sessionId) startNewChat();
+      loadSessions();
+    });
+    sessionsList.appendChild(row);
+  });
+}
+
+/** GET /chat/sessions/:id — replays a past session's turns into the message list and makes it the active session. */
+async function loadSession(id) {
+  let history;
+  try {
+    ({ history } = await api(`/chat/sessions/${id}`));
+  } catch (err) {
+    alert(`Failed to load chat: ${err.message}`);
+    return;
+  }
+  sessionId = id;
+  renderedAutomationUpdateIds = new Set();
+  messages.innerHTML = '';
+  if (!history.length) {
+    messages.appendChild(emptyState);
+  } else {
+    history.forEach((turn) => {
+      if (turn.role === 'user') {
+        addUser(turn.content);
+        return;
+      }
+      // A plan-kind turn carries its structured goal/plan/highRiskSteps as
+      // metadata (see server.ts's appendAssistantTurn) — reconstruct the same
+      // rich goal table + plan step cards the live turn showed, instead of
+      // falling back to a wall of escaped plain text. Read-only: no confirm
+      // area, since the wallet balances a past plan was built against may
+      // have changed by now — ask again for a plan that's safe to execute.
+      let metadata = null;
+      try { metadata = turn.metadata ? JSON.parse(turn.metadata) : null; } catch { metadata = null; }
+      if (metadata?.kind === 'automation_update') {
+        renderedAutomationUpdateIds.add(turn.recordId);
+        messages.appendChild(el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble wide">${escapeHtml(turn.content)}</div></div>`));
+      } else if (metadata?.kind === 'plan') {
+        const node = el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble wide">
+          ${escapeHtml(turn.content.split('\n\n')[0])}
+          <div class="side-note" style="margin:6px 0 2px;">From a past turn — balances may have changed since. Ask again for a fresh, executable plan.</div>
+          Parsed goal:${renderGoalKvHtml(metadata.goal)}
+          ${renderPlanHtml(metadata.plan)}
+          ${metadata.highRiskSteps && metadata.highRiskSteps.length ? renderHighRiskHtml(metadata.highRiskSteps) : ''}
+        </div></div>`);
+        messages.appendChild(node);
+      } else if (metadata?.kind === 'automation_draft') {
+        const node = el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble wide">
+          ${renderAutomationDraftHtml(metadata.automation, { past: true })}<div class="confirm-area"></div>
+        </div></div>`);
+        messages.appendChild(node);
+        setupAutomationConfirm(node.querySelector('.confirm-area'), metadata.automation);
+      } else {
+        messages.appendChild(el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble wide">${escapeHtml(turn.content)}</div></div>`));
+      }
+    });
+  }
+  scrollToBottom();
+  sessionsList.querySelectorAll('.session-row').forEach((r) => r.classList.toggle('active', r.dataset.sessionId === id));
+}
+
+function appendAutomationUpdate(turn) {
+  if (!turn || renderedAutomationUpdateIds.has(turn.recordId)) return;
+  renderedAutomationUpdateIds.add(turn.recordId);
+  if (emptyState.parentNode) emptyState.remove();
+  messages.appendChild(el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble wide">${escapeHtml(turn.content)}</div></div>`));
+  scrollToBottom();
+  loadSessions();
+}
+
+// Scheduled actions finish after the original chat stream. The monitor writes
+// their results into this session, and the open chat surfaces only new
+// automation turns (never a duplicated replay of ordinary conversation).
+setInterval(async () => {
+  if (!sessionId || document.hidden) return;
+  try {
+    const { history } = await api(`/chat/sessions/${sessionId}`);
+    history.forEach((turn) => {
+      try {
+        const metadata = turn.metadata ? JSON.parse(turn.metadata) : null;
+        if (metadata?.kind === 'automation_update') appendAutomationUpdate(turn);
+      } catch { /* malformed saved metadata falls back to normal history rendering */ }
+    });
+  } catch { /* a background refresh must never interrupt the active chat */ }
+}, 10_000);
+
+/**
+ * Renders linked + execution wallets in the chat view's right-side reference
+ * panel, so the user knows which wallet a conversation targets. Copy-only —
+ * no rename/export here, that's the Wallet tab's job. The active wallet's
+ * card expands to show its real per-token holdings (symbol, chain, balance,
+ * value), OKX-wallet-style, instead of just a name + address; clicking a
+ * different card both selects it as the chat wallet and swaps the expanded
+ * detail to it (single-select accordion, not independent toggles, so the
+ * panel never shows two full breakdowns stacked in a narrow 320px column).
+ */
+async function loadChatWalletsPanel() {
+  let execWallets = [];
+  try {
+    ({ wallets: execWallets } = await api('/wallet/execution'));
+    // Shared with the Wallet/Automations tabs' cache so a plan step's
+    // transferFrom/transferTo can be resolved to a real label from the Chat
+    // view too, even if the user never visited those other tabs this session.
+    cachedExecWallets = execWallets;
+  } catch {
+    // fine to show only linked wallets if this fails
+  }
+  const rows = [
+    ...linkedWallets.map((w) => ({ label: w.label || 'Linked wallet', address: w.address })),
+    ...execWallets.map((w) => ({ label: w.label, address: w.address })),
+  ];
+  if (!rows.length) {
+    chatWalletsPanel.innerHTML = '<div class="cw-empty">No wallets yet</div>';
+    return;
+  }
+  chatWalletsPanel.innerHTML = '<h4>Wallets</h4>';
+  rows.forEach((r) => {
+    const isActive = r.address.toLowerCase() === activeAddress?.toLowerCase();
+    const card = el(`<div class="cw-card ${isActive ? 'active' : ''}">
+      <div class="cw-row">
+        <div class="cw-info">
+          <span class="cw-label">${escapeHtml(r.label)}</span>
+          <span class="cw-addr">${shortAddr(r.address)}</span>
+        </div>
+        <span class="cw-total">…</span>
+        <button class="cw-copy" title="Copy address">⧉</button>
+      </div>
+      <div class="cw-tokens" style="display:${isActive ? 'block' : 'none'};"><div class="cwt-empty">Loading…</div></div>
+    </div>`);
+    const tokensEl = card.querySelector('.cw-tokens');
+    const totalEl = card.querySelector('.cw-total');
+    let portfolioBalances = null;
+    let defiPositions = null;
+
+    function renderTokens() {
+      if (!portfolioBalances) return;
+      const sorted = [...portfolioBalances].sort((a, b) => b.usdValue - a.usdValue);
+      const nonZero = sorted.filter((t) => t.usdValue > 0);
+      const zero = sorted.filter((t) => t.usdValue === 0);
+      const showZero = tokensEl.dataset.showZero === 'true';
+      const visible = showZero ? sorted : nonZero;
+      const defiHtml = (defiPositions?.markets || []).map((market) => `<div class="cwt-defi">
+        <div class="cwt-defi-head"><span>Aave · ${escapeHtml(chainLabel(market.chain))}</span><span>HF ${market.noDebt ? '∞' : market.healthFactor.toFixed(2)}</span></div>
+        <div class="cwt-defi-line"><span>Supply ${fmtUsd(market.suppliedUsd)}</span><span>Borrow ${fmtUsd(market.borrowedUsd)}</span></div>
+      </div>`).join('');
+      if (!visible.length && !defiHtml) {
+        tokensEl.innerHTML = '<div class="cwt-empty">No balances found</div>';
+        return;
+      }
+      tokensEl.innerHTML = visible
+        .map(
+          (t) => `<div class="cwt-row">
+        <div class="cwt-left"><span class="cwt-symbol">${escapeHtml(t.token)}</span><span class="cwt-chain">${escapeHtml(chainLabel(t.chain))}</span></div>
+        <div class="cwt-right"><span class="cwt-val">$${t.usdValue.toFixed(2)}</span><span class="cwt-amt">${fmtTokenAmount(t.amount)}</span></div>
+      </div>`
+        )
+        .join('') + (zero.length ? `<button class="zero-toggle-btn">${showZero ? 'Hide' : 'Show'} ${zero.length} zero-value token${zero.length > 1 ? 's' : ''}</button>` : '') + defiHtml;
+      const toggleBtn = tokensEl.querySelector('.zero-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          tokensEl.dataset.showZero = showZero ? 'false' : 'true';
+          renderTokens();
+        });
+      }
+    }
+
+    Promise.all([
+      api(`/wallet/portfolio?address=${r.address}`),
+      api(`/wallet/defi-positions?address=${r.address}`),
+    ])
+      .then(([p, defi]) => {
+        portfolioBalances = p.balances;
+        defiPositions = defi;
+        totalEl.textContent = fmtUsd(p.totalUsd + defi.summary.netUsd);
+        if (tokensEl.style.display !== 'none') renderTokens();
+      })
+      .catch(() => {
+        totalEl.textContent = '—';
+        if (tokensEl.style.display !== 'none') tokensEl.innerHTML = '<div class="cwt-empty">Failed to load</div>';
+      });
+
+    card.querySelector('.cw-copy').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await navigator.clipboard.writeText(r.address);
+      const btn = e.target;
+      const old = btn.textContent;
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = old; }, 1000);
+    });
+    card.querySelector('.cw-row').addEventListener('click', () => {
+      // Clicking the wallet that's already selected just toggles its token
+      // list open/closed, without touching which wallet is active. Clicking
+      // a different wallet selects it (as the chat's target wallet) and
+      // swaps the expanded detail to it, collapsing whichever was open.
+      if (card.classList.contains('active')) {
+        const isOpen = tokensEl.style.display !== 'none';
+        tokensEl.style.display = isOpen ? 'none' : 'block';
+        if (!isOpen) renderTokens();
+        return;
+      }
+      activeAddress = r.address;
+      activeWalletAddr.textContent = r.address;
+      chatWalletsPanel.querySelectorAll('.cw-card').forEach((x) => {
+        if (x !== card) {
+          x.classList.remove('active');
+          x.querySelector('.cw-tokens').style.display = 'none';
+        }
+      });
+      card.classList.add('active');
+      tokensEl.style.display = 'block';
+      renderTokens();
+    });
+    chatWalletsPanel.appendChild(card);
+  });
+}
+
+function addUser(text) {
+  if (emptyState.parentNode) emptyState.remove();
+  messages.appendChild(el(`<div class="msg user"><div class="avatar user">U</div><div class="bubble">${escapeHtml(text)}</div></div>`));
+  scrollToBottom();
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+async function addAgentTyping() {
+  const node = el(`<div class="msg agent"><div class="avatar agent">W</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div><div class="typing-stage"></div></div></div>`);
+  messages.appendChild(node);
+  scrollToBottom();
+  return node;
+}
+
+const STAGE_LABELS = {
+  triage: 'Checking what this needs…',
+  readiness: 'Checking if I have enough to go on…',
+  parsing_automation: 'Checking whether this should run automatically…',
+  parsing_goal: 'Understanding your goal…',
+  planning: 'Building the execution plan…',
+};
+
+function renderGoalKvHtml(goal) {
+  const rows = [
+    ['targetChain', goal.targetChain ?? '(to be decided by live yield lookup)'],
+    ['targetAsset', goal.targetAsset ?? '—'],
+    ['needsYieldLookup', String(goal.needsYieldLookup)],
+  ];
+  for (const c of goal.constraints || []) rows.push(['constraint', c]);
+  return `<table class="kv-table">${rows.map(([k, v]) => `<tr><td>${escapeHtml(k)}</td><td>${escapeHtml(String(v))}</td></tr>`).join('')}</table>`;
+}
+
+/** Labels an address using whatever this account actually knows it as (linked or execution wallet); falls back to the raw short address for anything else, e.g. a third party's wallet. */
+function labelForAddress(address) {
+  if (!address) return '';
+  const match = [...linkedWallets, ...cachedExecWallets].find((w) => w.address.toLowerCase() === address.toLowerCase());
+  return match ? `${escapeHtml(match.label)} (${shortAddr(address)})` : shortAddr(address);
+}
+
+function renderPlanHtml(plan) {
+  let html = '';
+  plan.steps.forEach((s, i) => {
+    if (i > 0) html += `<div class="dep-arrow">↓ ${s.amountIn.includes('output_of') ? s.amountIn : ''}</div>`;
+    // transfer has a real, specific FROM (the plan's own transferFrom, or —
+    // when unset — "whichever wallet you run this from" — that's still
+    // meaningfully different from every other action type, which always
+    // sends back to the signer) and a real TO — worth spelling out per step
+    // rather than the generic action/amount/chain line every other action
+    // type uses, since "which wallet" is exactly what was ambiguous before.
+    const body =
+      s.action === 'transfer'
+        ? `transfer ${s.amountIn} ${s.tokenIn} (${s.chainFrom})<br>from <strong>${s.transferFrom ? labelForAddress(s.transferFrom) : 'whichever wallet you run this from'}</strong><br>to <strong>${labelForAddress(s.transferTo)}</strong>`
+        : `${s.action} — ${s.amountIn} ${s.tokenIn} (${s.chainFrom}) → ${s.tokenOut} (${s.chainTo})` +
+          (s.transferFrom ? `<br>signed by <strong>${labelForAddress(s.transferFrom)}</strong>` : '') +
+          (s.transferTo ? `<br>lands in <strong>${labelForAddress(s.transferTo)}</strong>` : '');
+    html += `<div class="plan-step">
+      <div class="ps-head"><span>STEP ${i + 1}</span><span>${s.vendorAdapter || ''}</span></div>
+      <div class="ps-body">${body}</div>
+      ${s.protocol ? `<div class="ps-tag">${s.protocol}</div>` : ''}
+    </div>`;
+  });
+  return html;
+}
+
+/** A chat-created automation is a real typed trigger draft, not a fake plan
+ * card. Its one confirmation creates the stored trigger; subsequent fires
+ * need no further chat interaction. */
+function renderAutomationDraftHtml(automation, { past = false } = {}) {
+  const c = automation.config;
+  const rows = [
+    ['type', automation.title],
+    ['execution wallet', `${automation.sourceWalletLabel} (${shortAddr(automation.sourceWalletAddress)})`],
+    ['rule', automation.summary],
+  ];
+  if (c.type === 'dca') {
+    rows.push(['fund', c.tokenIn], ['buy', c.tokenOut], ['per purchase', String(c.amountPerBuy)]);
+    if (c.intervalMinutes) rows.push(['cadence', `every ${c.intervalMinutes} minutes`]);
+    if (c.timeOfDayUtc) rows.push(['first time', `${c.timeOfDayUtc} UTC`]);
+    if (c.startAfterMinutes) rows.push(['first run', `in ${c.startAfterMinutes} minutes`]);
+    if (c.completionCondition?.type === 'tx_count') rows.push(['stop after', `${c.completionCondition.count} confirmed purchases`]);
+  } else {
+    rows.push(['chain', c.chain], ['threshold', String(c.threshold)], ['on breach', `repay ${c.repayPercent}% of ${c.repayAsset} debt`]);
+  }
+  return `<div class="final-card automation-draft">
+    <div class="fc-amount">${escapeHtml(automation.title)}</div>
+    <div class="fc-label">${past ? 'Pending confirmation from this chat. One confirmation enables it; later actions follow the approved rule.' : 'One confirmation enables this automation; later actions follow the approved rule.'}</div>
+    <table class="kv-table">${rows.map(([k, v]) => `<tr><td>${escapeHtml(k)}</td><td>${escapeHtml(String(v))}</td></tr>`).join('')}</table>
+  </div>`;
+}
+
+function setupAutomationConfirm(container, automation) {
+  container.innerHTML = `<div class="confirm-actions">
+    <button class="btn primary confirm-automation-btn">Confirm &amp; enable</button>
+    <button class="btn small cancel-automation-btn">Cancel</button>
+  </div>`;
+  container.querySelector('.cancel-automation-btn').addEventListener('click', () => {
+    container.innerHTML = '<span class="toast">Cancelled — no automation was created.</span>';
+  });
+  container.querySelector('.confirm-automation-btn').addEventListener('click', async () => {
+    container.innerHTML = '<div class="toast">Creating automation and checking its first run…</div>';
+    try {
+      const result = await api('/chat/automations/confirm', { method: 'POST', body: JSON.stringify({ automation, sessionId }) });
+      automationsDataLoaded = false;
+      container.innerHTML = `<span class="toast">Enabled. This rule is now recorded in Automations as ${escapeHtml(result.triggerId)}.</span>
+        <button class="danger-btn delete-automation-btn" style="margin-left:8px;">Delete automation</button>`;
+      container.querySelector('.delete-automation-btn').addEventListener('click', async () => {
+        if (!confirm('Delete this automation and its local execution history? On-chain transactions cannot be undone.')) return;
+        await api(`/triggers/${result.triggerId}`, { method: 'DELETE' });
+        container.innerHTML = '<span class="toast">Automation deleted. Past on-chain transactions remain on-chain.</span>';
+        automationsDataLoaded = false;
+      });
+      if (result.firstRunUpdate) appendAutomationUpdate(result.firstRunUpdate);
+      // Refresh now when the user is already on Automations; otherwise the
+      // first visit fetches the newly-created card normally.
+      if (automationsView.classList.contains('active')) loadTriggers();
+    } catch (err) {
+      container.innerHTML = `<span class="toast" style="color:var(--danger);">Could not enable automation: ${escapeHtml(err.message)}</span>`;
+    }
+  });
+}
+
+function renderHighRiskHtml(warnings) {
+  return `<div class="risk-block">
+    <div class="risk-head">⚠ ${warnings.length} step${warnings.length > 1 ? 's' : ''} not on your trusted list</div>
+    ${warnings.map((w) => `<div class="risk-item">
+      <div class="risk-target">${escapeHtml(w.target)}</div>
+      <div class="risk-sig">${escapeHtml(w.functionSignature)}</div>
+      <div class="risk-reason">${escapeHtml(w.reason)}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+/** Real explorer link for a real tx hash, or just the plain hash when the chain has no known explorer (e.g. Robinhood Chain). */
+function explorerLink(chainKey, txHash) {
+  const chainMeta = SUPPORTED_CHAINS.find((c) => c.key === chainKey);
+  if (!chainMeta?.explorerUrl) return `<span class="mono">${txHash}</span>`;
+  return `<a href="${chainMeta.explorerUrl}/tx/${txHash}" target="_blank" rel="noopener" class="mono">${shortAddr(txHash)} ↗</a>`;
+}
+
+/** "run from" confirm area for a plan whose named source is the user's own linked wallet — no key on our backend, so every step signs via the browser wallet extension instead of a real POST /execute. */
+function renderLinkedWalletConfirm(container, plan, linkedWallet) {
+  container.innerHTML = `
+    <div class="form-field" style="margin-top:10px; max-width:320px;">
+      <label>Run from</label>
+      <div class="wallet-addr" style="padding:8px 0;">${escapeHtml(linkedWallet.label)} (${shortAddr(linkedWallet.address)})
+        <div class="side-note" style="margin-top:2px;">Your own linked wallet — each step signs in your wallet extension, one popup at a time.</div>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="btn primary confirm-execute-btn">Confirm &amp; execute</button>
+      <button class="btn small confirm-cancel-btn">Cancel</button>
+    </div>`;
+  container.querySelector('.confirm-cancel-btn').addEventListener('click', () => {
+    container.innerHTML = `<span class="toast">Cancelled — nothing was executed.</span>`;
+  });
+  container.querySelector('.confirm-execute-btn').addEventListener('click', () => {
+    executeLinkedWalletPlan(container, plan, linkedWallet);
+  });
+}
+
+async function switchWalletChain(chainKey) {
+  const chainMeta = SUPPORTED_CHAINS.find((c) => c.key === chainKey);
+  if (!chainMeta?.chainId) return;
+  const hexChainId = `0x${chainMeta.chainId.toString(16)}`;
+  try {
+    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: hexChainId }] });
+  } catch (switchErr) {
+    throw new Error(`Switch your wallet to ${chainMeta.label} and try again (${switchErr.message}).`);
+  }
+}
+
+/**
+ * Drives the client-signed execution protocol (execClient.ts on the backend)
+ * one step at a time: build-step -> sign in the wallet extension -> (an
+ * approval, if any, waits for its own receipt then rebuilds) -> confirm-step.
+ * Stops the whole sequence on the first failure, same as the server-signed
+ * /execute/stream path — a later step is never attempted on top of an
+ * uncertain earlier one.
+ */
+async function executeLinkedWalletPlan(container, plan, linkedWallet) {
+  container.innerHTML = `<div class="toast">Executing — each step signs in your wallet extension, one popup at a time.</div><div class="exec-steps-live"></div>`;
+  const stepsEl = container.querySelector('.exec-steps-live');
+
+  if (!window.ethereum) {
+    stepsEl.innerHTML = `<div class="toast" style="color:var(--danger);">No wallet extension found.</div>`;
+    return;
+  }
+  let connected;
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    connected = accounts[0] ? await checksumAddress(accounts[0]) : null;
+  } catch (err) {
+    stepsEl.innerHTML = `<div class="toast" style="color:var(--danger);">Couldn't read your wallet extension's connected account: ${err.message}</div>`;
+    return;
+  }
+  if (!connected || connected.toLowerCase() !== linkedWallet.address.toLowerCase()) {
+    // A mechanical Retry, not a chat message — nothing about the PLAN was
+    // wrong here, so making the user re-type the whole request in chat and
+    // hoping the goal parser correctly infers "resume the same transfer"
+    // from something like "I switched" is a real, needless failure mode.
+    // Switching accounts is a real user action in their own wallet extension
+    // that this page has no event for, so re-checking on a button click
+    // (rather than polling) is the right shape.
+    const retryRow = el(`<div class="toast" style="color:var(--danger);">Your wallet extension is on a different account — switch to ${shortAddr(linkedWallet.address)} in your wallet extension, then retry.</div>`);
+    const retryBtn = el(`<button class="btn small" style="margin-top:8px;">I've switched — retry</button>`);
+    retryBtn.addEventListener('click', () => executeLinkedWalletPlan(container, plan, linkedWallet));
+    stepsEl.innerHTML = '';
+    stepsEl.appendChild(retryRow);
+    stepsEl.appendChild(retryBtn);
+    return;
+  }
+
+  const priorOutputs = {};
+  const results = [];
+  for (const step of plan.steps) {
+    const card = el(`<div class="exec-step" id="es-${step.id}">
+      <div class="es-title"><span class="status-dot pending"></span><span class="es-title-text">${escapeHtml(step.action)} ${escapeHtml(step.amountIn)} ${escapeHtml(step.tokenIn)} (${escapeHtml(step.chainFrom)}) -&gt; ${escapeHtml(step.tokenOut)} (${escapeHtml(step.chainTo)})</span></div>
+      <div class="es-detail">Preparing…</div>
+      <div class="es-tx"></div>
+    </div>`);
+    stepsEl.appendChild(card);
+    scrollToBottom();
+
+    try {
+      let built = await api('/execute/client/build-step', {
+        method: 'POST',
+        body: JSON.stringify({ plan, stepId: step.id, walletAddress: linkedWallet.address, priorOutputs }),
+      });
+
+      while (built.approvalTx) {
+        card.querySelector('.es-detail').textContent = 'Approve token spend — check your wallet extension';
+        await switchWalletChain(step.chainFrom);
+        const approveHash = await window.ethereum.request({
+          method: 'eth_sendTransaction',
+          params: [{ from: linkedWallet.address, ...built.approvalTx }],
+        });
+        card.querySelector('.es-tx').innerHTML = `approval: ${explorerLink(step.chainFrom, approveHash)} `;
+        card.querySelector('.es-detail').textContent = 'Waiting for approval to confirm…';
+        const approvalReceipt = await api('/execute/client/wait-tx', {
+          method: 'POST',
+          body: JSON.stringify({ chainKey: step.chainFrom, txHash: approveHash }),
+        });
+        if (!approvalReceipt.success) throw new Error(`Approval transaction ${approveHash} reverted on-chain`);
+        built = await api('/execute/client/build-step', {
+          method: 'POST',
+          body: JSON.stringify({ plan, stepId: step.id, walletAddress: linkedWallet.address, priorOutputs }),
+        });
+      }
+
+      card.querySelector('.es-detail').textContent = 'Waiting for wallet confirmation…';
+      await switchWalletChain(step.chainFrom);
+      const txHash = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [{ from: linkedWallet.address, ...built.tx }],
+      });
+      card.querySelector('.es-tx').innerHTML += `${explorerLink(step.chainFrom, txHash)} `;
+      card.querySelector('.es-detail').textContent = 'Confirming on-chain…';
+
+      const result = await api('/execute/client/confirm-step', {
+        method: 'POST',
+        body: JSON.stringify({ plan, stepId: step.id, walletAddress: linkedWallet.address, txHash, built }),
+      });
+      priorOutputs[step.id] = result.actualAmountOut;
+      results.push(result);
+      card.querySelector('.status-dot').className = 'status-dot ok';
+      card.querySelector('.es-title-text').textContent = `Complete: sent ${result.actualAmountOut} ${result.outputSymbol}`;
+      card.querySelector('.es-detail').textContent = 'Signed with your wallet extension';
+    } catch (err) {
+      card.querySelector('.status-dot').className = 'status-dot fail';
+      card.querySelector('.es-detail').textContent = `Failed: ${err.message}`;
+      break; // stop the sequence — don't attempt later steps on top of a failed/uncertain one
+    }
+  }
+
+  if (results.length === plan.steps.length) {
+    const last = results[results.length - 1];
+    stepsEl.insertAdjacentHTML('afterend', `<div class="final-card">
+      <div class="fc-amount">${last.actualAmountOut} ${escapeHtml(last.outputSymbol)}</div>
+      <div class="fc-label">plan complete — ${results.length} step${results.length > 1 ? 's' : ''} confirmed on-chain, signed with your own wallet</div>
+    </div>`);
+    chatWalletsPanelLoaded = true;
+    loadChatWalletsPanel();
+  }
+}
+
+/** Populates a plan bubble's confirm area with a "run from" wallet picker + confirm/cancel, wired to a real POST /execute. */
+/**
+ * Populates a plan bubble's confirm area. Real bug this fixes: "Run from"
+ * used to always show every execution wallet, with zero connection to what
+ * the plan actually needs — for a transfer step that named a specific source
+ * wallet (e.g. "from 测试1"), you could pick ANY unrelated execution wallet
+ * and it would happily try to execute from there instead, silently sending
+ * from the wrong wallet's balance. Now: a plan with a named transfer source
+ * either locks "Run from" to the one matching execution wallet (no picker,
+ * no way to pick wrong), or — if that source is the user's own linked wallet,
+ * which the backend has no key for — refuses outright and points at the
+ * Wallet tab's own Send flow instead. Only a plan with NO named source (the
+ * original "consolidate my assets" style goal) still shows a free picker.
+ */
+async function setupConfirmArea(container, plan) {
+  if (!Array.isArray(plan.steps) || plan.steps.length === 0) {
+    container.innerHTML = '<span class="toast" style="color:var(--danger);">Waypoint could not form an executable plan. Nothing can be confirmed.</span>';
+    return;
+  }
+  container.innerHTML = '<div class="empty-hint">Loading execution wallets…</div>';
+  let wallets;
+  try {
+    ({ wallets } = await api('/wallet/execution'));
+    cachedExecWallets = wallets;
+  } catch (err) {
+    container.innerHTML = `<span class="toast">Failed to load execution wallets: ${err.message}</span>`;
+    return;
+  }
+
+  const namedSources = [...new Set(plan.steps.filter((s) => s.transferFrom).map((s) => s.transferFrom.toLowerCase()))];
+
+  if (namedSources.length > 1) {
+    // Every named source is one of THIS account's own execution wallets —
+    // the backend can sign for all of them, so each step just gets signed by
+    // whichever wallet it actually names (see orchestrator.ts's runPlan /
+    // server.ts's makeResolveAccount) — no picker needed, nothing to lock,
+    // one Confirm covers the whole multi-wallet plan. Only a mix with a
+    // linked wallet (no backend key) or an unrecognized address is still
+    // genuinely unsupported in one confirmation.
+    const unresolved = namedSources.filter((addr) => !wallets.some((w) => w.address.toLowerCase() === addr));
+    if (unresolved.length === 0) {
+      const walletLabels = namedSources.map(labelForAddress).join(', ');
+      container.innerHTML = `
+        <div class="form-field" style="margin-top:10px; max-width:420px;">
+          <label>Run from</label>
+          <div class="wallet-addr" style="padding:8px 0;">${walletLabels}
+            <div class="side-note" style="margin-top:2px;">Each step signs automatically from the execution wallet it names — no live confirmation per step.</div>
+          </div>
+        </div>
+        <div class="confirm-actions">
+          <button class="btn primary confirm-execute-btn">Confirm &amp; execute</button>
+          <button class="btn small confirm-cancel-btn">Cancel</button>
+        </div>`;
+      const defaultWalletId = wallets.find((w) => w.address.toLowerCase() === namedSources[0])?.walletId;
+      wireConfirmButtons(container, plan, () => defaultWalletId);
+      return;
+    }
+    const linkedInvolved = unresolved.some((addr) => linkedWallets.some((w) => w.address.toLowerCase() === addr));
+    container.innerHTML = `<span class="toast" style="color:var(--danger);">This plan names ${unresolved.map(labelForAddress).join(', ')}, which ${unresolved.length > 1 ? "aren't execution wallets" : "isn't an execution wallet"}${
+      linkedInvolved ? " (a linked wallet needs its own signature, which can't be mixed into a multi-wallet plan run automatically)" : ""
+    } — Waypoint can only auto-sign a multi-wallet plan when every named wallet is one of your execution wallets.</span>`;
+    return;
+  }
+
+  if (namedSources.length === 1) {
+    const namedSource = namedSources[0];
+    const matchingExecWallet = wallets.find((w) => w.address.toLowerCase() === namedSource);
+    if (!matchingExecWallet) {
+      const linkedWallet = linkedWallets.find((w) => w.address.toLowerCase() === namedSource);
+      if (linkedWallet) {
+        // Backend has no key for a linked wallet — but it can still build every
+        // step's unsigned tx (transfer, swap, bridge, deposit, custom_call all
+        // build a plain {to, data, value}, no key needed for that part) and hand
+        // it to the browser wallet extension to sign directly, right here in the
+        // chat, instead of stopping and pointing the user somewhere else.
+        renderLinkedWalletConfirm(container, plan, linkedWallet);
+        return;
+      }
+      container.innerHTML = `<span class="toast" style="color:var(--danger);">${labelForAddress(namedSource)} isn't one of your execution wallets or linked wallets.</span>`;
+      return;
+    }
+    container.innerHTML = `
+      <div class="form-field" style="margin-top:10px; max-width:320px;">
+        <label>Run from</label>
+        <div class="wallet-addr" style="padding:8px 0;">${escapeHtml(matchingExecWallet.label)} (${shortAddr(matchingExecWallet.address)})
+          <div class="side-note" style="margin-top:2px;">Locked to this plan's named source — not a free choice.</div>
+        </div>
+      </div>
+      <div class="confirm-actions">
+        <button class="btn primary confirm-execute-btn">Confirm &amp; execute</button>
+        <button class="btn small confirm-cancel-btn">Cancel</button>
+      </div>`;
+    wireConfirmButtons(container, plan, () => matchingExecWallet.walletId);
+    return;
+  }
+
+  if (!wallets.length) {
+    container.innerHTML = `<span class="toast">You need an execution wallet to run this — create or import one in the Wallet tab, then come back and confirm.</span>`;
+    return;
+  }
+  container.innerHTML = `
+    <div class="form-field" style="margin-top:10px; max-width:320px;">
+      <label>Run from</label>
+      <select class="confirm-wallet-select">${wallets.map((w) => `<option value="${w.walletId}">${escapeHtml(w.label)} (${shortAddr(w.address)})</option>`).join('')}</select>
+    </div>
+    <div class="confirm-actions">
+      <button class="btn primary confirm-execute-btn">Confirm &amp; execute</button>
+      <button class="btn small confirm-cancel-btn">Cancel</button>
+    </div>`;
+  wireConfirmButtons(container, plan, () => container.querySelector('.confirm-wallet-select').value);
+}
+
+/** Shared by both setupConfirmArea() branches above — the actual "run it" wiring is identical either way, only how walletId gets picked differs. */
+function wireConfirmButtons(container, plan, getWalletId) {
+  container.querySelector('.confirm-cancel-btn').addEventListener('click', () => {
+    container.innerHTML = `<span class="toast">Cancelled — nothing was executed.</span>`;
+  });
+  container.querySelector('.confirm-execute-btn').addEventListener('click', async () => {
+    const walletId = getWalletId();
+    container.innerHTML = `<div class="toast">Executing — every step simulated before signing, watch it run below.</div><div class="exec-steps-live"></div>`;
+    const stepsEl = container.querySelector('.exec-steps-live');
+    const cards = {};
+    let streamError = null;
+
+    await postSSE('/execute/stream', { plan, walletId }, (event) => {
+      if (event.type === 'step_start') {
+        const card = el(`<div class="exec-step" id="es-${event.stepId}">
+          <div class="es-title"><span class="status-dot pending"></span><span class="es-title-text">${escapeHtml(event.summary)}</span></div>
+          <div class="es-detail"></div>
+          <div class="es-tx"></div>
+        </div>`);
+        stepsEl.appendChild(card);
+        cards[event.stepId] = card;
+        scrollToBottom();
+      } else if (event.type === 'step_status') {
+        const card = cards[event.stepId];
+        if (card) card.querySelector('.es-detail').textContent = event.detail ? `${event.status} — ${event.detail}` : event.status;
+      } else if (event.type === 'step_tx') {
+        const card = cards[event.stepId];
+        if (card) {
+          const prefix = event.label === 'source' ? 'source' : event.label === 'destination' ? 'dest' : 'approval';
+          card.querySelector('.es-tx').innerHTML += `${prefix}: ${explorerLink(event.chainKey, event.txHash)} `;
+        }
+      } else if (event.type === 'step_complete') {
+        const card = cards[event.stepId];
+        if (card) {
+          card.querySelector('.status-dot').className = 'status-dot ok';
+          card.querySelector('.es-title-text').textContent = `Complete: received ${event.result.actualAmountOut} ${event.result.outputSymbol}`;
+          card.querySelector('.es-detail').textContent = 'Actual measured output (not an estimate)';
+        }
+      } else if (event.type === 'step_failed') {
+        const card = cards[event.stepId];
+        if (card) {
+          card.querySelector('.status-dot').className = 'status-dot fail';
+          card.querySelector('.es-detail').textContent = event.error;
+        }
+      } else if (event.type === 'done') {
+        if (event.results.length) {
+          const last = event.results[event.results.length - 1];
+          stepsEl.insertAdjacentHTML('afterend', `<div class="final-card">
+            <div class="fc-amount">${last.actualAmountOut} ${escapeHtml(last.outputSymbol)}</div>
+            <div class="fc-label">plan complete — ${event.results.length} step${event.results.length > 1 ? 's' : ''} confirmed on-chain</div>
+          </div>`);
+        }
+        // Real balances just changed on-chain — the cached wallet panel is now stale, refresh it.
+        chatWalletsPanelLoaded = true;
+        loadChatWalletsPanel();
+      } else if (event.type === 'error') {
+        streamError = event.error;
+      }
+      scrollToBottom();
+    }).catch((err) => { streamError = err.message; });
+
+    if (streamError) {
+      stepsEl.insertAdjacentHTML('afterend', `<span class="toast" style="color:var(--danger);">Execution failed: ${escapeHtml(streamError)}</span>`);
+      scrollToBottom();
+    }
+  });
+}
+
+/**
+ * Streams a real turn as the same narrative beats the pipeline actually runs
+ * through — reading real balances, then the real parsed goal, then the
+ * final plan/question/failure — as separate agent bubbles arriving live,
+ * rather than one bubble that silently waits for everything at once.
+ */
+let currentSendAbort = null;
+
+/** Wired to the Stop button — cancels the in-flight /chat/stream fetch, the same idea as Synapse's handleStop(). */
+function stopSending() {
+  currentSendAbort?.abort();
+}
+
+async function sendMessage() {
+  const text = goalInput.value.trim();
+  if (!text) return;
+  goalInput.value = '';
+  sendBtn.disabled = true;
+  sendBtn.style.display = 'none';
+  stopBtn.style.display = 'flex';
+  goalInput.disabled = true;
+  currentSendAbort = new AbortController();
+
+  addUser(text);
+  let currentTyping = await addAgentTyping();
+  // The typing bubble created above is only "spent" once an event actually
+  // fills it. Turns that skip reading_balances (e.g. a question answerable
+  // without any chain read) go straight to 'result' — reusing this same
+  // bubble instead of always minting a new one, so it doesn't get left
+  // behind as a permanently-stuck "..." indicator with no event left to fill it.
+  let bubbleSpent = false;
+  async function nextBubble() {
+    if (bubbleSpent) currentTyping = await addAgentTyping();
+    bubbleSpent = true;
+    return currentTyping.querySelector('.bubble');
+  }
+
+  try {
+    await postSSE('/chat/stream', { message: text, sessionId, walletAddress: activeAddress }, async (event) => {
+      if (currentSendAbort?.signal.aborted) return;
+      if (event.type === 'stage') {
+        // Real-time "what's happening right now" label under the typing dots —
+        // never spends the bubble (nextBubble() isn't called here), just keeps
+        // the existing typing indicator updated instead of a static "..." for
+        // however long each backend agent call actually takes.
+        const label = currentTyping.querySelector('.typing-stage');
+        if (label) label.textContent = STAGE_LABELS[event.stage] || '';
+      } else if (event.type === 'reading_balances') {
+        // Real internal step (the backend genuinely reads live balances before
+        // planning), but not something to print into the conversation — the
+        // user only wants to see this when they actually asked to see their
+        // balances, which the final answer/plan bubble already covers. Stays
+        // silent in the transcript; just updates the typing indicator's stage
+        // label so it's visibly not stuck while the real multi-chain read runs.
+        const label = currentTyping.querySelector('.typing-stage');
+        if (label) label.textContent = 'Reading your real balances…';
+      } else if (event.type === 'goal_parsed') {
+        const bubble = await nextBubble();
+        bubble.className = 'bubble wide';
+        bubble.innerHTML = `Parsed your goal:${renderGoalKvHtml(event.goal)}`;
+        scrollToBottom();
+        // Immediately mint the next typing indicator so the 'planning' stage
+        // event right after this has somewhere live to show — otherwise
+        // there'd be a silent gap between the goal table and the eventual
+        // result bubble while buildPlan() (a real LLM call) is still running.
+        currentTyping = await addAgentTyping();
+        bubbleSpent = false;
+      } else if (event.type === 'result') {
+        const bubble = await nextBubble();
+        const result = event;
+        sessionId = result.sessionId;
+        if (result.kind === 'question') {
+          bubble.className = 'bubble';
+          bubble.textContent = result.message;
+        } else if (result.kind === 'plan') {
+          bubble.className = 'bubble wide';
+          bubble.innerHTML = `${escapeHtml(result.message)}${renderPlanHtml(result.plan)}
+            ${result.highRiskSteps && result.highRiskSteps.length ? renderHighRiskHtml(result.highRiskSteps) : ''}
+            <div class="confirm-area"></div>`;
+          setupConfirmArea(bubble.querySelector('.confirm-area'), result.plan);
+        } else if (result.kind === 'automation_draft') {
+          bubble.className = 'bubble wide';
+          bubble.innerHTML = `${escapeHtml(result.message)}${renderAutomationDraftHtml(result.automation)}<div class="confirm-area"></div>`;
+          setupAutomationConfirm(bubble.querySelector('.confirm-area'), result.automation);
+        } else {
+          bubble.className = 'bubble error';
+          bubble.textContent = `${result.message}\n\n${result.error || ''}`;
+        }
+        scrollToBottom();
+      } else if (event.type === 'error') {
+        const bubble = currentTyping.querySelector('.bubble');
+        bubble.className = 'bubble error';
+        bubble.textContent = `Request failed: ${event.error}`;
+      }
+    }, currentSendAbort.signal);
+  } catch (err) {
+    const bubble = currentTyping.querySelector('.bubble');
+    if (err.name === 'AbortError') {
+      // Don't clobber real content (a goal/plan table) that already rendered
+      // before Stop was clicked — just leave it and note it was cut short.
+      // Only the still-just-typing-dots case needs a clean replacement.
+      if (bubbleSpent) {
+        bubble.insertAdjacentHTML('beforeend', '<div style="color: var(--text-dimmer); font-size: 12px; margin-top: 6px;">(stopped)</div>');
+      } else {
+        bubble.className = 'bubble';
+        bubble.textContent = 'Stopped.';
+      }
+    } else {
+      bubble.className = 'bubble error';
+      bubble.textContent = `Request failed: ${err.message}`;
+    }
+  } finally {
+    currentSendAbort = null;
+    sendBtn.disabled = false;
+    sendBtn.style.display = '';
+    stopBtn.style.display = 'none';
+    goalInput.disabled = false;
+    goalInput.focus();
+    scrollToBottom();
+    loadSessions();
+  }
+}
+
+document.getElementById('emailStepForm').addEventListener('submit', handleEmailStepSubmit);
+document.getElementById('passwordStepForm').addEventListener('submit', handlePasswordStepSubmit);
+signOutBtn.addEventListener('click', signOut);
+newChatBtn.addEventListener('click', startNewChat);
+sendBtn.addEventListener('click', sendMessage);
+stopBtn.addEventListener('click', stopSending);
+// IME composition (Chinese/Japanese/Korean input methods) also uses Enter to
+// confirm a candidate from the picker — without this check, that confirm
+// keystroke fell through and sent the half-typed message instead of just
+// finishing the composition. Same pattern as Synapse's chat-panel.tsx.
+let goalInputComposing = false;
+goalInput.addEventListener('compositionstart', () => { goalInputComposing = true; });
+goalInput.addEventListener('compositionend', () => { goalInputComposing = false; });
+goalInput.addEventListener('keydown', (e) => {
+  const isComposing = goalInputComposing || e.isComposing || e.keyCode === 229;
+  if (e.key === 'Enter' && !isComposing) sendMessage();
+});
+navChat.addEventListener('click', () => switchView('chat'));
+navWallet.addEventListener('click', () => switchView('wallet'));
+navAutomations.addEventListener('click', () => switchView('automations'));
+navTrust.addEventListener('click', () => switchView('trust'));
+templatePicker.addEventListener('click', (e) => {
+  const card = e.target.closest('.template-card');
+  if (!card) return;
+  templatePicker.querySelectorAll('.template-card').forEach((c) => c.classList.toggle('selected', c === card));
+  selectTemplate(card.dataset.template);
+});
+addWalletBtn.addEventListener('click', linkAdditionalWallet);
+createExecWalletBtn.addEventListener('click', createExecutionWallet);
+importExecWalletBtn.addEventListener('click', () => {
+  const opening = !importExecWalletForm.classList.contains('open');
+  if (!opening) {
+    closeImportExecutionWallet();
+    return;
+  }
+  importExecWalletForm.classList.add('open');
+  importExecWalletKey.focus();
+});
+cancelImportExecWalletBtn.addEventListener('click', closeImportExecutionWallet);
+importExecWalletForm.addEventListener('submit', importExecutionWallet);
+
+let googleTokenClient = null;
+
+/**
+ * Wires up the custom "Continue with Google" button (see .google-btn in the
+ * HTML) using Google's OAuth2 token-client API instead of Google Identity
+ * Services' own pre-built widget — that widget can't be restyled to actually
+ * match Waypoint's dark UI (Google's brand rules force the "G" logo onto a
+ * light square regardless of theme), which is what made it look out of place.
+ * A custom button is still a fully supported, real Google sign-in flow: the
+ * click opens Google's own real OAuth popup, and the access token it returns
+ * is verified server-side by using it against Google's own userinfo endpoint
+ * (see accounts/auth.ts's handleGoogleLogin). Only shown at all once a real
+ * backend call confirms GOOGLE_CLIENT_ID is actually configured — no button
+ * that fails when clicked.
+ */
+async function initGoogleSignIn() {
+  try {
+    const { googleClientId } = await api('/auth/config');
+    if (!googleClientId) return;
+    await new Promise((resolve, reject) => {
+      if (window.google?.accounts?.oauth2) return resolve();
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error('Failed to load Google Identity Services'));
+      document.head.appendChild(script);
+    });
+    googleTokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: googleClientId,
+      scope: 'openid email profile',
+      callback: handleGoogleToken,
+    });
+    const btn = document.getElementById('googleSignInBtn');
+    btn.style.display = 'flex';
+    btn.addEventListener('click', () => googleTokenClient.requestAccessToken());
+    document.getElementById('googleDivider').style.display = 'flex';
+  } catch (err) {
+    console.error('Google sign-in unavailable:', err);
+  }
+}
+
+async function handleGoogleToken(tokenResponse) {
+  clearAuthError();
+  if (tokenResponse.error) {
+    showAuthError(`Google sign-in failed: ${tokenResponse.error}`);
+    return;
+  }
+  const btn = document.getElementById('googleSignInBtn');
+  btn.disabled = true;
+  try {
+    await api('/auth/google', { method: 'POST', body: JSON.stringify({ accessToken: tokenResponse.access_token }) });
+    walletDataLoaded = false;
+    trustDataLoaded = false;
+    automationsDataLoaded = false;
+    chatWalletsPanelLoaded = false;
+    await refreshAccount();
+    resetAuthForm();
+  } catch (err) {
+    showAuthError(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+loadSupportedChains();
+initGoogleSignIn();
+refreshAccount();
+</script>
+</body>
+</html>

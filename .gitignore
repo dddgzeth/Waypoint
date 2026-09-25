@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+secrets/
+data/
+*.db
+*.db-shm
+*.db-wal
+*.pem
+*-tmp.mjs
+*.bak
+.DS_Store
