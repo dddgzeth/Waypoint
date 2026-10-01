@@ -51,6 +51,7 @@ import { evaluateCompletion } from "./triggers/completion.js";
 import { runTriggerAttempt, startMonitorLoop } from "./triggers/monitor.js";
 import { trust as trustCustomCall, listAllowed as listTrustedCustomCalls, revoke as revokeCustomCall } from "./customCall/allowlist.js";
 import { CHAINS, CHAIN_KEYS, chainsWithAave } from "./chains/index.js";
+import { registerAspRoutes } from "./asp.js";
 
 const app = express();
 app.use(
@@ -61,6 +62,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+registerAspRoutes(app); // public, stateless, rate-limited planning service for agent marketplaces (OKX.AI A2MCP)
 
 app.get("/auth/config", handleAuthConfig);
 app.post("/auth/check-email", handleCheckEmail);

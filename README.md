@@ -175,6 +175,7 @@ The chat UI is one client of this API. A developer calling it directly gets the 
 | Wallets | `GET /wallet/portfolio` · `/wallet/defi-positions` · `/wallet/health-factor` · `GET/POST /wallet/execution` · `POST /wallet/execution/import` · `/:id/rename` · `/:id/export` |
 | Automations | `POST /triggers` · `POST /chat/automations/confirm` · `GET /triggers` · `POST /triggers/:id/active` · `/check` · `DELETE /triggers/:id` · `GET /triggers/:id/executions` |
 | Trust list | `GET /trust` · `POST /trust/revoke` |
+| Agent service | `GET/POST /asp/plan`: a public, read-only planning service for agent marketplaces (OKX.AI A2MCP). Send `{goal, walletAddress?}`, get a validated plan back. It never signs or executes, asks one question when the goal is unclear, and is rate limited. |
 | Meta | `GET /chains` · `GET /health` |
 
 ## Tech stack

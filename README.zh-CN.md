@@ -174,6 +174,7 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 | 钱包 | `GET /wallet/portfolio` · `/wallet/defi-positions` · `/wallet/health-factor` · `GET/POST /wallet/execution` · `POST /wallet/execution/import` · `/:id/rename` · `/:id/export` |
 | 自动化 | `POST /triggers` · `POST /chat/automations/confirm` · `GET /triggers` · `POST /triggers/:id/active` · `/check` · `DELETE /triggers/:id` · `GET /triggers/:id/executions` |
 | 信任列表 | `GET /trust` · `POST /trust/revoke` |
+| Agent 服务 | `GET/POST /asp/plan`：面向 agent 市场（OKX.AI A2MCP）的公开只读规划服务。传入 `{goal, walletAddress?}`，返回经过校验的计划。不签名、不执行，目标不清楚时只问一个问题，并有限流。 |
 | 元信息 | `GET /chains` · `GET /health` |
 
 ## 技术栈
