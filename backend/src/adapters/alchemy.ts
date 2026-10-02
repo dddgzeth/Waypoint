@@ -10,7 +10,7 @@
  * network: [NETWORK_AGNOSTIC]"), so it keeps using the fixed tokens list in
  * tokenRegistry.ts instead.
  */
-import { createPublicClient, erc20Abi } from "viem";
+import { createPublicClient, erc20Abi, parseAbi } from "viem";
 import { alchemyApiKeys, getChain, rpcUrl } from "../chains/index.js";
 import { alchemyHttp } from "./alchemyTransport.js";
 
@@ -59,18 +59,31 @@ interface TokenBalancesResult {
   tokenBalances: Array<{ contractAddress: string; tokenBalance: string | null; error?: string | null }>;
 }
 
+const reservesAbi = parseAbi(["function getReservesList() view returns (address[])"]);
+const RESERVES_TTL_MS = 10 * 60_000;
+const reservesCache = new Map<string, { at: number; tokens: `0x${string}`[] }>();
+
+async function aaveReserveTokens(chainKey: string, pool: `0x${string}`, client: ReturnType<typeof createPublicClient>): Promise<`0x${string}`[]> {
+  const hit = reservesCache.get(chainKey);
+  if (hit && Date.now() - hit.at < RESERVES_TTL_MS) return hit.tokens;
+  const tokens = [...(await client.readContract({ address: pool, abi: reservesAbi, functionName: "getReservesList" }))];
+  reservesCache.set(chainKey, { at: Date.now(), tokens });
+  return tokens;
+}
+
 /** Every non-zero ERC20 balance the address has ever transacted in, on the given chain. Empty array on chains Alchemy doesn't index. */
 export async function discoverTokenBalances(chainKey: string, address: `0x${string}`): Promise<RawTokenBalance[]> {
   const chain = getChain(chainKey);
   if (!chain?.alchemyNetwork) return [];
-  if (chain.knownTokens) {
-    // Alchemy's token API isn't enabled on this chain: read balanceOf for the fixed list over the same RPC.
+  if (chain.discoverViaAaveReserves && chain.aavePool) {
+    // Alchemy's token API isn't enabled on this chain: check balanceOf for each reserve of the chain's Aave V3 Pool.
     const client = createPublicClient({ chain: chain.viemChain, transport: alchemyHttp(chainKey) });
+    const tokens = await aaveReserveTokens(chainKey, chain.aavePool, client);
     const balances = await client.multicall({
-      contracts: chain.knownTokens.map((t) => ({ address: t, abi: erc20Abi, functionName: "balanceOf" as const, args: [address] })),
+      contracts: tokens.map((t) => ({ address: t, abi: erc20Abi, functionName: "balanceOf" as const, args: [address] })),
       allowFailure: true,
     });
-    return chain.knownTokens.flatMap((t, i) => {
+    return tokens.flatMap((t, i) => {
       const r = balances[i];
       return r && r.status === "success" && r.result > 0n ? [{ contractAddress: t.toLowerCase() as `0x${string}`, balanceRaw: r.result }] : [];
     });
