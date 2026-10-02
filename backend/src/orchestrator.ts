@@ -40,7 +40,8 @@
  *          Transfer log (same technique as the same-chain case, just against
  *          the destination chain's receipt instead of the source chain's).
  *   4. Two bridge vendors are wired up (LI.FI and Relay); a plan step picks
- *      one via its `vendorAdapter` field, defaulting to LI.FI when unset.
+ *      one via its `vendorAdapter` field; when unset, Relay is tried first
+ *      and LI.FI is the fallback (BRIDGE_PRIMARY=lifi flips the order).
  *      Neither is a hard dependency — see plan.md for why.
  */
 import { createPublicClient, createWalletClient, parseEventLogs, erc20Abi, maxUint256, encodeFunctionData, formatUnits, parseUnits } from "viem";
@@ -342,70 +343,56 @@ export async function buildStepTx(
     throw lastError;
   }
 
-  if (step.vendorAdapter?.toLowerCase() === "relay") {
-    const quote = await getRelayQuote({
-      fromChain: step.chainFrom,
-      fromToken: step.tokenIn,
-      fromAmount: resolvedAmountIn,
-      fromAddress,
-      toChain: step.chainTo,
-      toToken: step.tokenOut,
-      toAddress: recipientAddress,
-    });
-    if (!quote.transactionRequest) {
-      throw new OrchestratorError("Relay quote returned no transactionRequest", step.id);
-    }
-    return {
-      tx: quote.transactionRequest,
-      outputSymbol: step.tokenOut,
-      outputTokenAddress,
-      outputDecimals,
-      bridgeAdapter: "relay",
-      relayRequestId: quote.requestId,
-    };
-  }
-
-  let quote;
-  try {
-    quote = await getLifiQuote({
-      fromChain: step.chainFrom,
-      fromToken: step.tokenIn,
-      fromAmount: resolvedAmountIn,
-      fromAddress,
-      toChain: step.chainTo,
-      toToken: step.tokenOut,
-      toAddress: recipientAddress,
-    });
-  } catch (lifiError) {
-    if (step.chainFrom === step.chainTo) throw lifiError;
-    const relay = await getRelayQuote({
-      fromChain: step.chainFrom,
-      fromToken: step.tokenIn,
-      fromAmount: resolvedAmountIn,
-      fromAddress,
-      toChain: step.chainTo,
-      toToken: step.tokenOut,
-      toAddress: recipientAddress,
-    });
-    return {
-      tx: relay.transactionRequest!,
-      outputSymbol: step.tokenOut,
-      outputTokenAddress,
-      outputDecimals,
-      bridgeAdapter: "relay",
-      relayRequestId: relay.requestId,
-    };
-  }
-  if (!quote.transactionRequest) {
-    throw new OrchestratorError("LI.FI quote returned no transactionRequest", step.id);
-  }
-  return {
-    tx: quote.transactionRequest,
-    outputSymbol: step.tokenOut,
-    outputTokenAddress,
-    outputDecimals,
-    bridgeAdapter: "lifi",
+  // Bridge / cross-chain swap provider order. An explicit vendorAdapter pins one provider (no fallback);
+  // otherwise Relay is tried first (BRIDGE_PRIMARY=lifi flips it) and the other is the automatic fallback.
+  // Same-chain routes through this path are LI.FI only.
+  const pinned = step.vendorAdapter?.toLowerCase();
+  const providers: Array<"relay" | "lifi"> =
+    pinned === "relay" ? ["relay"]
+    : pinned === "lifi" || step.chainFrom === step.chainTo ? ["lifi"]
+    : (process.env.BRIDGE_PRIMARY ?? "relay").toLowerCase() === "lifi" ? ["lifi", "relay"] : ["relay", "lifi"];
+  const request = {
+    fromChain: step.chainFrom,
+    fromToken: step.tokenIn,
+    fromAmount: resolvedAmountIn,
+    fromAddress,
+    toChain: step.chainTo,
+    toToken: step.tokenOut,
+    toAddress: recipientAddress,
   };
+  let lastError: unknown;
+  for (const provider of providers) {
+    try {
+      if (provider === "relay") {
+        const quote = await getRelayQuote(request);
+        if (!quote.transactionRequest) throw new OrchestratorError("Relay quote returned no transactionRequest", step.id);
+        return { tx: quote.transactionRequest, outputSymbol: step.tokenOut, outputTokenAddress, outputDecimals, bridgeAdapter: "relay", relayRequestId: quote.requestId };
+      }
+      const quote = await getLifiQuote(request);
+      if (!quote.transactionRequest) throw new OrchestratorError("LI.FI quote returned no transactionRequest", step.id);
+      return { tx: quote.transactionRequest, outputSymbol: step.tokenOut, outputTokenAddress, outputDecimals, bridgeAdapter: "lifi" };
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError;
+}
+
+/**
+ * Gas limit with headroom for routed swap/bridge and custom-call transactions. A bare eth_estimateGas can be
+ * too tight for contracts whose behaviour depends on remaining gas (verified: a Relay bridge on X Layer ran
+ * out of gas with 665k used of a 665k limit while simulating fine). Unused gas is refunded, so the headroom
+ * costs nothing. GAS_LIMIT_BUFFER_PCT (default 30) tunes it; undefined lets the wallet client estimate itself.
+ */
+async function gasLimitWithHeadroom(chainKey: string, from: `0x${string}`, tx: { to: `0x${string}`; data: `0x${string}`; value: bigint }): Promise<bigint | undefined> {
+  try {
+    const pct = BigInt(Math.max(0, Math.round(Number(process.env.GAS_LIMIT_BUFFER_PCT ?? 30))));
+    const client = createPublicClient({ chain: VIEM_CHAIN[chainKey], transport: alchemyHttp(chainKey) });
+    const estimate = await client.estimateGas({ account: from, to: tx.to, data: tx.data, value: tx.value });
+    return (estimate * (100n + pct)) / 100n;
+  } catch {
+    return undefined;
+  }
 }
 
 export async function simulate(chainKey: string, tx: TxRequest, fromAddress: `0x${string}`): Promise<void> {
@@ -622,6 +609,7 @@ async function runCustomCallStep(step: PlanStep, account: Account, onProgress?: 
     to: encoded.to,
     data: encoded.data,
     value: encoded.value,
+    gas: await gasLimitWithHeadroom(step.chainFrom, account.address, { to: encoded.to, data: encoded.data, value: encoded.value }),
     nonce: await pendingNonce(step.chainFrom, account.address),
   });
   console.log(`  [${step.id}] tx sent: ${txHash} — waiting for confirmation...`);
@@ -772,12 +760,13 @@ async function runStep(step: PlanStep, resolvedAmountIn: number, account: Accoun
 
   onProgress?.({ type: "step_status", stepId: step.id, status: "quoting", detail: `Getting a route for ${step.action}` });
   let built = await buildStepTx(step, resolvedAmountIn, account.address, recipient);
-  // Native outputs do not emit an ERC20 Transfer log. For an ERC20 -> native
-  // same-chain swap, measure the recipient's balance delta and add back the
-  // transaction fee when the recipient is also the signer. This keeps
-  // output_of() accurate without pretending a native transfer has a log.
+  // Native outputs do not emit an ERC20 Transfer log. Measure the recipient's
+  // balance delta on the destination chain instead, adding back the transaction
+  // fee for a same-chain step whose recipient is also the signer (a cross-chain
+  // step's fee is paid on the source chain, so the destination delta is exact).
+  // This keeps output_of() accurate without pretending a native transfer has a log.
   const nativeOutputClient =
-    !isCrossChain && built.outputTokenAddress === null
+    built.outputTokenAddress === null
       ? createPublicClient({ chain: VIEM_CHAIN[step.chainTo], transport: alchemyHttp(step.chainTo) })
       : null;
   const nativeOutputBefore = nativeOutputClient ? await nativeOutputClient.getBalance({ address: recipient }) : null;
@@ -829,6 +818,7 @@ async function runStep(step: PlanStep, resolvedAmountIn: number, account: Accoun
     to: built.tx.to,
     data: built.tx.data,
     value: BigInt(built.tx.value),
+    gas: await gasLimitWithHeadroom(step.chainFrom, account.address, { to: built.tx.to, data: built.tx.data, value: BigInt(built.tx.value) }),
     nonce: await pendingNonce(step.chainFrom, account.address),
   });
   console.log(`  [${step.id}] tx sent: ${txHash} — waiting for confirmation...`);
@@ -846,12 +836,6 @@ async function runStep(step: PlanStep, resolvedAmountIn: number, account: Accoun
   let destTxHash: `0x${string}` | undefined;
   if (isCrossChain) {
     if (built.bridgeAdapter === "relay") {
-      if (!built.outputTokenAddress) {
-        throw new OrchestratorError(
-          "Relay cross-chain step outputs a native token, which this orchestrator can't yet measure (needs an ERC20 Transfer log on the destination tx) — not supported",
-          step.id
-        );
-      }
       console.log(`  [${step.id}] cross-chain step (Relay) — polling /intents/status/v3 for destination-chain delivery...`);
       onProgress?.({ type: "step_status", stepId: step.id, status: "bridging", detail: "Polling Relay for destination-chain delivery" });
       const status = await pollRelayStatus({ requestId: built.relayRequestId! });
@@ -861,12 +845,24 @@ async function runStep(step: PlanStep, resolvedAmountIn: number, account: Accoun
           step.id
         );
       }
-      console.log(`  [${step.id}] destination delivery confirmed: tx ${status.receivingTxHash} on ${step.chainTo} — reading Transfer log...`);
+      console.log(`  [${step.id}] destination delivery confirmed: tx ${status.receivingTxHash} on ${step.chainTo}`);
       destTxHash = status.receivingTxHash;
       onProgress?.({ type: "step_tx", stepId: step.id, label: "destination", chainKey: step.chainTo, txHash: status.receivingTxHash });
-      const destClient = createPublicClient({ chain: VIEM_CHAIN[step.chainTo], transport: alchemyHttp(step.chainTo) });
-      const destReceipt = await destClient.getTransactionReceipt({ hash: status.receivingTxHash });
-      actualAmountOut = readActualOutputFromReceipt(destReceipt.logs, built.outputTokenAddress, recipient, built.outputDecimals);
+      if (built.outputTokenAddress) {
+        const destClient = createPublicClient({ chain: VIEM_CHAIN[step.chainTo], transport: alchemyHttp(step.chainTo) });
+        const destReceipt = await destClient.getTransactionReceipt({ hash: status.receivingTxHash });
+        actualAmountOut = readActualOutputFromReceipt(destReceipt.logs, built.outputTokenAddress, recipient, built.outputDecimals);
+      } else {
+        // Pin both reads to the delivery transaction's block: a "latest" read can come from an endpoint that
+        // hasn't seen the delivery yet (observed on Base: it reported 0 for a delivery that had landed).
+        const destReceipt = await nativeOutputClient!.waitForTransactionReceipt({ hash: status.receivingTxHash, timeout: 120_000 });
+        const [atBlock, beforeBlock] = await Promise.all([
+          nativeOutputClient!.getBalance({ address: recipient, blockNumber: destReceipt.blockNumber }),
+          nativeOutputClient!.getBalance({ address: recipient, blockNumber: destReceipt.blockNumber - 1n }),
+        ]);
+        const received = atBlock - beforeBlock;
+        actualAmountOut = Number(formatUnits(received > 0n ? received : 0n, built.outputDecimals));
+      }
     } else {
       console.log(`  [${step.id}] cross-chain step (LI.FI) — polling /status for destination-chain delivery...`);
       onProgress?.({ type: "step_status", stepId: step.id, status: "bridging", detail: "Polling LI.FI for destination-chain delivery" });

@@ -89,7 +89,9 @@ Rules:
 - Same-chain swaps should leave vendorAdapter null unless the user explicitly
   selects a provider. The execution router applies its live same-chain
   provider policy and fallback; do not pin a vendor in the plan.
-- Cross-chain movement (bridge / cross_chain_swap) should generally use vendorAdapter "lifi"
+- Cross-chain movement (bridge / cross_chain_swap) should leave vendorAdapter null unless the user
+  explicitly selects a provider. The execution router applies its bridge provider order and fallback;
+  do not pin a vendor in the plan.
 - If a step's input amount comes from a previous step's output, write amountIn as
   "output_of(<previous step id>)" — never invent a concrete number
 - Use amountIn "all" only for an ERC20 balance held by the step's signer. It
@@ -339,7 +341,7 @@ function validatePlan(
     if (step.action === "swap" && !sameChain) {
       // Testing showed the model sometimes labels a cross-chain swap as plain "swap"
       // instead of "cross_chain_swap" — the action type determines which vendor
-      // adapter gets used (same-chain -> DEX/Enso, cross-chain -> LI.FI/Across), so a
+      // adapter gets used (same-chain -> DEX/Enso, cross-chain -> Relay/LI.FI), so a
       // wrong label sends the Orchestrator to the wrong adapter. Must catch it here;
       // can't rely on the model labeling it correctly every time.
       throw new PlanValidationError(
