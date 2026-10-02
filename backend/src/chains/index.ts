@@ -10,6 +10,7 @@ import { ethereum } from "./ethereum.js";
 import { base } from "./base.js";
 import { arbitrum } from "./arbitrum.js";
 import { polygon } from "./polygon.js";
+import { xlayer } from "./xlayer.js";
 import type { ChainConfig } from "./types.js";
 
 export type { ChainConfig };
@@ -18,7 +19,7 @@ export type { ChainConfig };
 // transaction confirmation can use the same Alchemy-backed RPC service. Keep
 // an unsupported chain's definition in its own file for future enablement,
 // but do not advertise it as a supported execution target.
-export const CHAINS: Record<string, ChainConfig> = { ethereum, base, arbitrum, polygon };
+export const CHAINS: Record<string, ChainConfig> = { ethereum, base, arbitrum, polygon, xlayer };
 
 export const CHAIN_KEYS: string[] = Object.keys(CHAINS);
 

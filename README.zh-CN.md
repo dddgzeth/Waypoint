@@ -16,7 +16,7 @@
 | 它... | 怎么做到 |
 |---|---|
 | **认识你** | 分层记忆你的偏好、约束和历史，不用每次重复说明。 |
-| **看得到一切** | 读取你在 Ethereum、Base、Arbitrum、Polygon 上所有执行钱包和关联钱包，真实的代币发现，实时的 DeFi 头寸。 |
+| **看得到一切** | 读取你在 Ethereum、Base、Arbitrum、Polygon、X Layer 上所有执行钱包和关联钱包，代币发现，实时的 DeFi 头寸。 |
 | **替你行动** | 把目标变成带依赖关系的多步骤跨链计划，你确认一次就执行。 |
 | **一直盯着** | 自动化在后台运行，条件满足时在链上行动，并在你的对话里汇报。 |
 
@@ -86,7 +86,7 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 
 **自由组合。** 下面这八种动作是积木，不是固定流程。Planner 按目标需要的任意顺序把它们串起来，跨链、跨钱包，每一步的产出接到下一步。先换币，再跨链，再存入 Aave；或者从 Aave 取出，跨链，换币，再转给另一个地址。合约调用也可以是链条里的一步。每个组合出来的计划在你看到之前，都要先过确定性校验。
 
-**链：** Ethereum、Base、Arbitrum、Polygon。加一条链就是在 `backend/src/chains/` 下加一个文件，其余全部读取这个注册表。
+**链：** Ethereum、Base、Arbitrum、Polygon、X Layer。加一条链就是在 `backend/src/chains/` 下加一个文件，其余全部读取这个注册表。
 
 **8 种动作**
 

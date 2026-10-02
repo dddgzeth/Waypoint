@@ -25,4 +25,9 @@ export interface ChainConfig {
   alchemyNetwork?: string;
   /** CoinMarketCap DEX API "platform" id for this chain (e.g. "base"), used to price arbitrary discovered tokens by contract address via /v1/dex/token/price — verified real per chain via a live call, not assumed. */
   cmcPlatform?: string;
+  /**
+   * ERC-20 contracts to check with balanceOf when Alchemy's token-discovery API
+   * isn't available on this chain (e.g. X Layer). Only these tokens are discovered there.
+   */
+  knownTokens?: `0x${string}`[];
 }

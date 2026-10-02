@@ -16,7 +16,7 @@ One agent that works for you across every chain and wallet you use, the way a go
 | It... | How |
 |---|---|
 | **Knows you** | Layered memory of your preferences, constraints and history. You do not restate them every time. |
-| **Sees everything** | Reads all your execution and linked wallets on Ethereum, Base, Arbitrum and Polygon, with real token discovery and live DeFi positions. |
+| **Sees everything** | Reads all your execution and linked wallets on Ethereum, Base, Arbitrum, Polygon and X Layer, with token discovery and live DeFi positions. |
 | **Acts for you** | Turns a goal into a dependency-ordered, multi-step, cross-chain plan and executes it after one confirmation. |
 | **Keeps watching** | Automations run in the background, act onchain when a condition is met, and report back in your chat. |
 
@@ -87,7 +87,7 @@ Design rule: language judgment goes to the model, given good context. Hard const
 
 **Free composition.** The eight actions below are building blocks, not fixed workflows. The Planner chains them in whatever order a goal needs, across chains and wallets, with each step's output feeding the next. Swap, then bridge, then deposit into Aave. Or withdraw from Aave, bridge, swap, and send to another address. A contract call can be a step in the chain too. Every composed plan passes deterministic validation before you see it.
 
-**Chains:** Ethereum, Base, Arbitrum, Polygon. A chain is one file in `backend/src/chains/`; everything else reads the registry.
+**Chains:** Ethereum, Base, Arbitrum, Polygon, X Layer. A chain is one file in `backend/src/chains/`; everything else reads the registry.
 
 **8 action types**
 

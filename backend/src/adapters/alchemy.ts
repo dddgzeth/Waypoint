@@ -63,6 +63,18 @@ interface TokenBalancesResult {
 export async function discoverTokenBalances(chainKey: string, address: `0x${string}`): Promise<RawTokenBalance[]> {
   const chain = getChain(chainKey);
   if (!chain?.alchemyNetwork) return [];
+  if (chain.knownTokens) {
+    // Alchemy's token API isn't enabled on this chain: read balanceOf for the fixed list over the same RPC.
+    const client = createPublicClient({ chain: chain.viemChain, transport: alchemyHttp(chainKey) });
+    const balances = await client.multicall({
+      contracts: chain.knownTokens.map((t) => ({ address: t, abi: erc20Abi, functionName: "balanceOf" as const, args: [address] })),
+      allowFailure: true,
+    });
+    return chain.knownTokens.flatMap((t, i) => {
+      const r = balances[i];
+      return r && r.status === "success" && r.result > 0n ? [{ contractAddress: t.toLowerCase() as `0x${string}`, balanceRaw: r.result }] : [];
+    });
+  }
   const result = await rpc<TokenBalancesResult>(chain.alchemyNetwork, "alchemy_getTokenBalances", [address]);
   return result.tokenBalances
     .filter((t) => !t.error && t.tokenBalance && BigInt(t.tokenBalance) > 0n)

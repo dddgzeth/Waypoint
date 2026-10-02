@@ -19,6 +19,7 @@ import { prettyPlan } from "./models.js";
 import type { WalletStateSnapshot } from "./models.js";
 import { judgeReadiness } from "./agents/readinessAgent.js";
 import { publicErrorMessage } from "./errors.js";
+import { CHAIN_KEYS } from "./chains/index.js";
 
 const GOAL_MIN = 3;
 const GOAL_MAX = 600;
@@ -79,7 +80,7 @@ const DESCRIPTOR = {
     status: '"planned" with a plan, or "needs_clarification" with one question when the goal is unclear',
     executed: "always false",
   },
-  supportedChains: ["ethereum", "base", "arbitrum", "polygon"],
+  supportedChains: CHAIN_KEYS,
   example: {
     goal: "Swap 100 USDC on Base to ETH, bridge it to Arbitrum and deposit it into Aave",
   },

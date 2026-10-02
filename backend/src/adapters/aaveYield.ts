@@ -198,13 +198,16 @@ export async function getAaveUserAssetPositions(
   });
 }
 
+/** Lowercased symbol with Tether's "₮" folded to "t", so "USDT0" matches X Layer's on-chain "USD₮0". */
+const symKey = (symbol: string) => symbol.toLowerCase().replace(/₮/g, "t");
+
 /** Finds a reserve by canonical address or (for natural language only) its live ABI symbol. */
 export async function getAaveSupplyApy(chainKey: string, asset: string): Promise<YieldQuote> {
   if (isContractTokenReference(asset)) return quoteForUnderlying(chainKey, asset);
   const reserves = await getAaveReserves(chainKey);
-  const normalized = asset.toLowerCase();
+  const normalized = symKey(asset);
   const quote = reserves
-    .filter((reserve) => reserve.symbol.toLowerCase() === normalized || (asset.toUpperCase() === "ETH" && reserve.symbol.toUpperCase() === "WETH"))
+    .filter((reserve) => symKey(reserve.symbol) === normalized || (asset.toUpperCase() === "ETH" && reserve.symbol.toUpperCase() === "WETH"))
     .filter((reserve) => reserve.active && !reserve.frozen && !reserve.paused)
     .sort((a, b) => b.apy - a.apy)[0];
   if (!quote) throw new Error(`No Aave reserve for ${asset} on ${chainKey}`);
@@ -219,7 +222,7 @@ export async function getAaveBorrowMarket(chainKey: string, asset: string): Prom
   const candidates = isContractTokenReference(asset)
     ? [await quoteForUnderlying(chainKey, asset)]
     : (await getAaveReserves(chainKey)).filter((reserve) =>
-        reserve.symbol.toLowerCase() === asset.toLowerCase() ||
+        symKey(reserve.symbol) === symKey(asset) ||
         (asset.toUpperCase() === "ETH" && reserve.symbol.toUpperCase() === "WETH")
       );
   const market = candidates
