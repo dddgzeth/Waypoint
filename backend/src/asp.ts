@@ -9,6 +9,12 @@
  *
  * Because it is public and every call costs model and RPC usage, it is rate limited
  * (per client and globally) and concurrency capped.
+ *
+ * Payment (x402, OKX facilitator): when ASP_PAY_TO is set, POST /asp/plan costs ASP_PRICE_USD
+ * per call, paid in the network's x402 stablecoin (default X Layer, eip155:196). The caller
+ * gets HTTP 402 with the payment requirements, signs, and retries. Payment is settled only
+ * when the response is a success (status < 400): bad input, rate limits, errors and
+ * "needs clarification" (422) are never charged. Unset ASP_PAY_TO = free mode.
  */
 import type { Express, Request, Response } from "express";
 import { isAddress } from "viem";
@@ -20,6 +26,9 @@ import type { WalletStateSnapshot } from "./models.js";
 import { judgeReadiness } from "./agents/readinessAgent.js";
 import { publicErrorMessage } from "./errors.js";
 import { CHAIN_KEYS } from "./chains/index.js";
+import { paymentMiddleware, x402ResourceServer } from "@okxweb3/x402-express";
+import { ExactEvmScheme } from "@okxweb3/x402-evm/exact/server";
+import { OKXFacilitatorClient } from "@okxweb3/x402-core";
 
 const GOAL_MIN = 3;
 const GOAL_MAX = 600;
@@ -62,7 +71,11 @@ function clientId(req: Request): string {
   return h("cf-connecting-ip") ?? h("x-real-ip") ?? req.socket.remoteAddress ?? "unknown";
 }
 
-const DESCRIPTOR = {
+const PAY_TO = () => process.env.ASP_PAY_TO?.trim() || null;
+const PRICE_USD = () => process.env.ASP_PRICE_USD?.trim() || "0.02";
+const PAY_NETWORK = () => (process.env.ASP_X402_NETWORK?.trim() || "eip155:196") as `${string}:${string}`;
+
+const DESCRIPTOR = () => ({
   ok: true,
   service: "Waypoint Plan",
   description:
@@ -85,7 +98,16 @@ const DESCRIPTOR = {
     goal: "Swap 100 USDC on Base to ETH, bridge it to Arbitrum and deposit it into Aave",
   },
   limits: { perClientPerHour: PER_CLIENT_PER_HOUR(), globalPerHour: GLOBAL_PER_HOUR() },
-};
+  pricing: PAY_TO()
+    ? {
+        model: "x402 pay-per-call",
+        pricePerPlanUsd: PRICE_USD(),
+        network: PAY_NETWORK(),
+        payTo: PAY_TO(),
+        charged: "only when a plan is returned (HTTP 200); clarification questions (422), errors and rate limits are free",
+      }
+    : { model: "free" },
+});
 
 async function handlePlan(req: Request, res: Response) {
   const body = (req.body ?? {}) as { goal?: unknown; goalText?: unknown; walletAddress?: unknown };
@@ -93,7 +115,7 @@ async function handlePlan(req: Request, res: Response) {
 
   // No goal: describe the service (also what a marketplace health probe sees).
   if (raw === undefined || raw === null || raw === "") {
-    res.status(200).json(DESCRIPTOR);
+    res.status(200).json(DESCRIPTOR());
     return;
   }
   if (typeof raw !== "string") {
@@ -141,7 +163,8 @@ async function handlePlan(req: Request, res: Response) {
     const timeout = new Promise<never>((_, rej) => setTimeout(() => rej(new Error("planning timed out")), REQUEST_TIMEOUT_MS));
     const result = await Promise.race([work, timeout]);
     if ("question" in result) {
-      res.status(200).json({ ok: true, service: "Waypoint Plan", status: "needs_clarification", executed: false, question: result.question });
+      // 422, not 200: no plan was produced, so the x402 middleware does not settle (the caller is not charged).
+      res.status(422).json({ ok: false, service: "Waypoint Plan", status: "needs_clarification", executed: false, charged: false, question: result.question });
       return;
     }
     const { parsed, plan } = result;
@@ -174,7 +197,31 @@ async function handlePlan(req: Request, res: Response) {
   }
 }
 
+function registerPayment(app: Express): void {
+  const payTo = PAY_TO();
+  if (!payTo) return;
+  if (!isAddress(payTo)) throw new Error("ASP_PAY_TO is not a valid 0x address");
+  const { OKX_ONCHAIN_API_KEY: apiKey, OKX_ONCHAIN_SECRET_KEY: secretKey, OKX_ONCHAIN_PASSPHRASE: passphrase } = process.env;
+  if (!apiKey || !secretKey || !passphrase) throw new Error("ASP_PAY_TO is set but the OKX_ONCHAIN_* facilitator credentials are missing");
+  const facilitator = new OKXFacilitatorClient({ apiKey, secretKey, passphrase } as never);
+  const network = PAY_NETWORK();
+  const server = new x402ResourceServer(facilitator).register(network, new ExactEvmScheme());
+  app.use(
+    paymentMiddleware(
+      {
+        "POST /asp/plan": {
+          accepts: { scheme: "exact", price: `$${PRICE_USD()}`, network, payTo, maxTimeoutSeconds: 60 },
+          description: "Waypoint Plan: one validated multi-step cross-chain execution plan (read-only)",
+        },
+      },
+      server,
+    ),
+  );
+  console.log(`[asp] x402 payment enabled: $${PRICE_USD()} per plan on ${network}, payTo ${payTo}`);
+}
+
 export function registerAspRoutes(app: Express): void {
-  app.get("/asp/plan", (_req, res) => res.status(200).json(DESCRIPTOR));
+  registerPayment(app);
+  app.get("/asp/plan", (_req, res) => res.status(200).json(DESCRIPTOR()));
   app.post("/asp/plan", handlePlan);
 }
