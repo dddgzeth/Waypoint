@@ -28,6 +28,8 @@ export interface RelayQuoteRequest {
 
 export interface RelayQuote {
   requestId: string;
+  /** Contract the input token must be approved to, read from Relay's own approve step. Absent for native input or an existing allowance. */
+  approvalSpender: `0x${string}` | null;
   estimatedToAmount: number; // human-readable, from details.currencyOut.amountFormatted
   estimatedToAmountUsd: number | null;
   minimumToAmount: number; // worst case after slippage, human-readable
@@ -89,6 +91,7 @@ export async function getRelayQuote(req: RelayQuoteRequest): Promise<RelayQuote>
   }
   const data = (await res.json()) as {
     steps: Array<{
+      id?: string;
       requestId?: string;
       items: Array<{ data: { to: `0x${string}`; data: `0x${string}`; value: string; from: `0x${string}` } }>;
     }>;
@@ -103,19 +106,27 @@ export async function getRelayQuote(req: RelayQuoteRequest): Promise<RelayQuote>
   if (!data.steps || data.steps.length === 0) {
     throw new Error("Relay quote returned no executable steps");
   }
-  if (data.steps.length > 1 || data.steps[0].items.length > 1) {
-    // Multi-step Relay routes (e.g. separate approve step for ERC20 input) aren't
-    // handled yet — same scope boundary as Morpho not being implemented in the
-    // orchestrator. Fail loudly instead of silently only running the first step.
+  // An ERC-20 input comes back as [approve, deposit]. The orchestrator owns approvals (ensureAllowance),
+  // so take the approve step's spender and execute only the remaining single transaction. Anything else
+  // multi-step still fails loudly instead of silently running a partial route.
+  const isApprove = (st: { id?: string }) => st.id === "approve";
+  const txSteps = data.steps.filter((st) => !isApprove(st));
+  if (txSteps.length !== 1 || txSteps[0].items.length !== 1) {
     throw new Error("Relay quote returned a multi-step route; only single-transaction routes are supported so far");
   }
+  const approveData = data.steps.find(isApprove)?.items[0]?.data.data;
+  // approve(address spender, uint256 amount): selector 0x095ea7b3, then the spender as the first 32-byte word.
+  const approvalSpender = approveData && approveData.startsWith("0x095ea7b3") && approveData.length >= 74
+    ? (`0x${approveData.slice(34, 74)}` as `0x${string}`)
+    : null;
 
-  const step = data.steps[0];
+  const step = txSteps[0];
   const item = step.items[0];
   const toDecimals = await tokenReferenceDecimals(req.toChain, req.toToken);
 
   return {
     requestId: step.requestId ?? "",
+    approvalSpender,
     estimatedToAmount: Number(data.details.currencyOut.amountFormatted),
     estimatedToAmountUsd: data.details.currencyOut.amountUsd ? Number(data.details.currencyOut.amountUsd) : null,
     minimumToAmount: fromBaseUnitsStr(data.details.currencyOut.minimumAmount, toDecimals),

@@ -366,7 +366,7 @@ export async function buildStepTx(
       if (provider === "relay") {
         const quote = await getRelayQuote(request);
         if (!quote.transactionRequest) throw new OrchestratorError("Relay quote returned no transactionRequest", step.id);
-        return { tx: quote.transactionRequest, outputSymbol: step.tokenOut, outputTokenAddress, outputDecimals, bridgeAdapter: "relay", relayRequestId: quote.requestId };
+        return { tx: quote.transactionRequest, outputSymbol: step.tokenOut, outputTokenAddress, outputDecimals, bridgeAdapter: "relay", relayRequestId: quote.requestId, approvalSpender: quote.approvalSpender ?? undefined };
       }
       const quote = await getLifiQuote(request);
       if (!quote.transactionRequest) throw new OrchestratorError("LI.FI quote returned no transactionRequest", step.id);
