@@ -84,11 +84,11 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 
 ## 能力
 
-**自由组合。** 下面这八种动作是积木，不是固定流程。Planner 按目标需要的任意顺序把它们串起来，跨链、跨钱包，每一步的产出接到下一步。先换币，再跨链，再存入 Aave；或者从 Aave 取出，跨链，换币，再转给另一个地址。合约调用也可以是链条里的一步。每个组合出来的计划在你看到之前，都要先过确定性校验。
+**自由组合。** 下面这十种动作是积木，不是固定流程。Planner 按目标需要的任意顺序把它们串起来，跨链、跨钱包，每一步的产出接到下一步。先换币，再跨链，再存入 Aave；或者从 Aave 取出，跨链，换币，再转给另一个地址。合约调用，或者 Waypoint 自己写并部署的合约，也可以是链条里的一步。每个组合出来的计划在你看到之前，都要先过确定性校验。
 
 **链：** Ethereum、Base、Arbitrum、Polygon、X Layer。加一条链就是在 `backend/src/chains/` 下加一个文件，其余全部读取这个注册表。
 
-**8 种动作**
+**10 种动作**
 
 | 动作 | 做什么 | 实现 |
 |---|---|---|
@@ -99,15 +99,23 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 | `protocol_supply` | 存入 Aave V3 | 直接调用 Aave Pool `supply()` |
 | `protocol_withdraw` | 从 Aave V3 取出 | 直接调用 Aave Pool `withdraw()` |
 | `protocol_borrow` | 从 Aave V3 借款 | 直接调用 Aave Pool `borrow()` |
+| `wrap_native` / `unwrap_native` | 把原生代币包装成对应的封装代币，或换回 | 直接调用 WETH 类合约的 `deposit()` / `withdraw()`，到账数量从收据里测量 |
 | `custom_call` | 单条链上任意合约函数 | 由函数签名做通用 ABI 编码。账号没用过的 `(合约, 函数)` 组合需要明确确认，确认后加入信任列表 |
+| `deploy_contract` | 部署 agent 为这个目标写的合约 | 见 [Agent 写的合约](#agent-写的合约) |
 
 **多钱包计划。** 一个计划可以跨多个执行钱包。每一步由它指定的钱包签名，一个钱包某一步的产出可以喂给另一个钱包的步骤。整件事一次确认。
 
 **看真实状态，不是固定清单。** 余额来自 Alchemy 的代币发现，钱包碰过的每个 ERC-20 都能看到，不是只有一个写死的稳定币。疑似垃圾币和钓鱼币在展示和规划之前就被过滤。代币可以写预置符号，也可以直接给任意 ERC-20 合约地址，精度实时解析。
 
+**路由提供商。** 每次换币和跨链都经过提供商注册表（LI.FI、Relay、Enso、OKX DEX）。请求可以指定提供商，否则按优先级依次尝试。某条路线上反复失败的提供商会被自动降级，由下一个接手。
+
 **实时收益。** "收益最高的 Aave 市场"是直接读各条链 Aave V3 Pool 合约的储备数据得出的，不靠模型的记忆。
 
 **头寸。** 每个钱包在每条链上的 Aave 头寸和健康因子实时读取。
+
+## Agent 写的合约
+
+没有现成协议能满足目标时，Waypoint 自己写合约。Planner 加入一个 `deploy_contract` 步骤，合约作者 agent 写出 Solidity，部署之前要过四道关：静态检查、用 solc 0.8.28 编译、检查必需函数是否齐全、独立的审计模型。部署出的地址会直接传给同一计划里后面的 `custom_call` 步骤，Waypoint 部署的合约对该账号免二次确认。已部署的合约会在应用里列出。
 
 ## 自动化
 
@@ -123,11 +131,15 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 - **监控：** 后台循环每 60 秒检查所有启用的规则，用规则对应的执行钱包签名。
 - **历史：** 每次尝试无论成败，都记录 tx hash、gas、金额和错误，显示在 Automations 页面。
 - **回到你的对话：** 执行结果会发回创建这条规则的那个对话，即使浏览器关着，回来也能看到。
+- **混合请求：** 一句话里同时提出计划和规则。先执行计划，再把规则交给你确认一次。
 - **控制：** 任何规则都可以暂停、恢复、立即检查或删除。
+- **钱包：** 规则在执行钱包上运行，你不在场时 Waypoint 也能代为签名。
 
 ## 记忆与知识
 
-**记忆。** 四层。L0 原始对话轮次，L1 类型化的"原子"（偏好、约束、事件），用 SQLite FTS5 检索，L2 场景摘要，L3 用户画像。L2、L3 每轮都注入；L0、L1 在需要具体事实时检索。每轮结束后在后台提取记忆。
+**记忆。** 四层，外加执行历史。L0 原始对话轮次，L1 类型化的"原子"（偏好、约束、事件），用 SQLite FTS5 检索，L2 场景摘要，L3 用户画像。L2、L3 每轮都注入；L0、L1 在需要具体事实时检索。每轮结束后在后台提取记忆。
+
+**执行历史。** 每个已执行的步骤都会记录路线、提供商、耗时和结果。规划从这份历史出发，走通过的路线优先，反复失败的路线会被避开。
 
 **执行知识库。** 一个小型事实语料库，按关键词检索，只在相关时才注入。里面有开发中真实踩过的坑，以及一份外部数据源目录。例如：
 
@@ -145,11 +157,10 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 |---|---|
 | **生成的执行钱包** | 托管制。通过 Privy 创建，签名权限在 Waypoint 的 Authorization Key，这也是自动化能在无人在场时运行的原因。密钥由 Privy 在 AWS Nitro Enclaves 内用 Shamir 分片持有。 |
 | **导入的执行钱包** | 你粘贴一次私钥，在离开进程前用 HPKE 加密，Waypoint 从不存明文。导入后同上，托管制。 |
+| **OKX Agentic Wallet** | 密钥在 OKX 的 TEE 里，不可导出。Waypoint 把每笔交易交给已登录的 `onchainos` CLI 签名。在钱包面板添加，之后像普通执行钱包一样使用。 |
 | **关联的浏览器钱包** | 非托管。Waypoint 构建并模拟每一步，由你的钱包签名。私钥不会到达服务器。 |
 
 执行钱包可以随时导出私钥，回到自托管。执行钱包可以重命名，所以你可以说"执行钱包 2"，也可以用自己起的名字。
-
-`backend/src/delegation/` 里有一套可用的 EIP-7702 + MetaMask Delegation Framework 实现，已在 Base 主网用一次性账号验证过，目前还没有接入应用。
 
 ## 执行保证
 
@@ -174,12 +185,13 @@ Triage ─► Readiness ─► Automation Intent ─► Intent ─► Planner �
 | 钱包 | `GET /wallet/portfolio` · `/wallet/defi-positions` · `/wallet/health-factor` · `GET/POST /wallet/execution` · `POST /wallet/execution/import` · `/:id/rename` · `/:id/export` |
 | 自动化 | `POST /triggers` · `POST /chat/automations/confirm` · `GET /triggers` · `POST /triggers/:id/active` · `/check` · `DELETE /triggers/:id` · `GET /triggers/:id/executions` |
 | 信任列表 | `GET /trust` · `POST /trust/revoke` |
-| Agent 服务 | `GET/POST /asp/plan`：面向 agent 市场（OKX.AI A2MCP）的公开只读规划服务。传入 `{goal, walletAddress?}`，返回经过校验的计划。不签名、不执行，目标不清楚时只问一个问题，并有限流。 |
+| Agent 服务 | `GET/POST /asp/plan`：面向 agent 市场（OKX.AI A2MCP）的公开只读规划服务。传入 `{goal, walletAddress?}`，返回经过校验的计划。不签名、不执行，目标不清楚时只问一个问题，并有限流。每次调用通过 x402 在 X Layer 上付费。 |
+| 注册表 | `GET /capabilities` · `GET /signers` · `GET /contracts` · `POST /wallet/execution/agentic` |
 | 元信息 | `GET /chains` · `GET /health` |
 
 ## 技术栈
 
-TypeScript · Express · viem · zod · better-sqlite3（FTS5）· SIWE · Privy · Alchemy · LI.FI · Relay · Enso · OKX DEX API · Aave V3 · MetaMask Smart Accounts Kit · 兼容 OpenAI 的模型 API
+TypeScript · Express · viem · zod · better-sqlite3（FTS5）· SIWE · Privy · Alchemy · LI.FI · Relay · Enso · OKX DEX API · Aave V3 · 兼容 OpenAI 的模型 API
 
 ## 项目结构
 
@@ -199,7 +211,10 @@ backend/src/
   knowledge/         执行知识库
   wallets/           Privy 执行钱包和钱包存储
   accounts/          邮箱、Google 和 SIWE 认证
-  delegation/        EIP-7702 + MetaMask 委托模块
+  capabilities/      每种动作一个文件
+  providers/         路由提供商注册表
+  signers/           Privy 与 OKX Agentic Wallet 签名器
+  contracts/         合约作者、四道关、已部署合约存储
 frontend/            index.html（落地页）、app.html（应用界面）
 logo/                品牌素材
 ```
@@ -224,11 +239,3 @@ python3 -m http.server 3005
 其他脚本：`npm run demo -- "<目标>"` 不启动服务，直接跑完状态读取、目标解析和规划。`npm run compare:swap-providers` 用同一输入对比 Enso 和 OKX 的路由，不签名任何交易。
 
 `backend/.env.example` 列出了所有变量：主模型和单独的复审模型、执行提供方、数据提供方、认证和 Privy。
-
-## 方向
-
-- **同一引擎上的更多自动化：** 价格触发的止盈止损、组合再平衡、收益迁移、带阈值的定时归集。
-- **跨提供方的路由比价：** 选最优报价，而不是固定顺序。对比工具已经在对比 Enso 和 OKX。
-- **更多链和协议：** 一条链是一个文件，一个协议是一个适配器。
-- **非托管的委托执行：** 把委托模块接入应用。
-- **Waypoint 作为 API：** 给想要执行 agent 但不想自己造的钱包和应用使用。
