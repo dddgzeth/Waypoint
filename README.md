@@ -85,11 +85,11 @@ Design rule: language judgment goes to the model, given good context. Hard const
 
 ## Capabilities
 
-**Free composition.** The eight actions below are building blocks, not fixed workflows. The Planner chains them in whatever order a goal needs, across chains and wallets, with each step's output feeding the next. Swap, then bridge, then deposit into Aave. Or withdraw from Aave, bridge, swap, and send to another address. A contract call can be a step in the chain too. Every composed plan passes deterministic validation before you see it.
+**Free composition.** The ten actions below are building blocks, not fixed workflows. The Planner chains them in whatever order a goal needs, across chains and wallets, with each step's output feeding the next. Swap, then bridge, then deposit into Aave. Or withdraw from Aave, bridge, swap, and send to another address. A contract call, or a contract Waypoint wrote and deployed itself, can be a step in the chain too. Every composed plan passes deterministic validation before you see it.
 
 **Chains:** Ethereum, Base, Arbitrum, Polygon, X Layer. A chain is one file in `backend/src/chains/`; everything else reads the registry.
 
-**8 action types**
+**10 action types**
 
 | Action | What it does | Implementation |
 |---|---|---|
@@ -100,15 +100,23 @@ Design rule: language judgment goes to the model, given good context. Hard const
 | `protocol_supply` | Deposit into Aave V3 | Direct Aave Pool `supply()` |
 | `protocol_withdraw` | Withdraw from Aave V3 | Direct Aave Pool `withdraw()` |
 | `protocol_borrow` | Borrow from Aave V3 | Direct Aave Pool `borrow()` |
+| `wrap_native` / `unwrap_native` | Wrap the native token into its wrapped form, and back | Direct WETH-style `deposit()` / `withdraw()`, with the minted amount measured from the receipt |
 | `custom_call` | Any contract function on one chain | Generic ABI encoding from a function signature. A `(contract, function)` pair your account has not used before requires explicit confirmation, then joins your trust list |
+| `deploy_contract` | Deploy a contract the agent wrote for the goal | See [Agent-written contracts](#agent-written-contracts) |
 
 **Multi-wallet plans.** One plan can span several execution wallets. Each step is signed by the wallet it names, and the output of one wallet's step can feed another's. One confirmation for the whole thing.
 
 **Real state, not a fixed list.** Balances come from Alchemy token discovery, so every ERC-20 a wallet has touched is seen, not one hardcoded stablecoin. Likely spam and phishing tokens are filtered out before anything is shown or planned against. Tokens can be given as a curated symbol or as any raw ERC-20 address, with decimals resolved live.
 
+**Routing providers.** Every swap and bridge goes through a provider registry (LI.FI, Relay, Enso, OKX DEX). A request can pin a provider, otherwise providers are tried in priority order. A provider that keeps failing for a route is demoted automatically, and the next one takes over.
+
 **Live yield.** "The highest-yielding Aave market" is answered by reading Aave V3 reserve data directly from each chain's Pool contract, not by a model's memory.
 
 **Positions.** Aave positions and health factors are read live per wallet and chain.
+
+## Agent-written contracts
+
+When no existing protocol fits a goal, Waypoint writes the contract itself. The Planner adds a `deploy_contract` step; a contract-author agent writes the Solidity, and four gates run before anything is deployed: static lint, compile with solc 0.8.28, a check that the required functions exist, and an independent audit model. The deployed address then flows into the later `custom_call` steps of the same plan, and contracts Waypoint deployed are trusted for the account without a second confirmation. Deployed contracts are listed in the app.
 
 ## Automations
 
@@ -124,11 +132,15 @@ Say it in the chat. Waypoint drafts a typed rule, you confirm once, and it runs 
 - **Monitor:** a background loop checks every active rule every 60 seconds and signs with the rule's execution wallet.
 - **History:** every attempt, success or failure, is recorded with tx hash, gas, amounts and error, and shown in the Automations tab.
 - **Back in your chat:** outcomes are posted into the conversation that created the rule, so they are there even if the browser was closed.
+- **Mixed requests:** ask for a plan and a rule in one message. The plan runs first, then the rule is offered for one confirmation.
 - **Control:** pause, resume, check now, or delete any rule.
+- **Wallets:** rules run on execution wallets, which Waypoint can sign for while you are away.
 
 ## Memory and knowledge
 
-**Memory.** Four layers. L0 raw conversation turns, L1 typed atoms (preferences, constraints, events) searchable with SQLite FTS5, L2 scenario summaries, L3 a persona. L2 and L3 are injected every turn; L0 and L1 are searched when a specific fact is needed. Extraction runs in the background after each turn.
+**Memory.** Four layers, plus execution history. L0 raw conversation turns, L1 typed atoms (preferences, constraints, events) searchable with SQLite FTS5, L2 scenario summaries, L3 a persona. L2 and L3 are injected every turn; L0 and L1 are searched when a specific fact is needed. Extraction runs in the background after each turn.
+
+**Execution history.** Every executed step is recorded with its route, provider, duration and outcome. Planning starts from that history, so routes that worked are preferred and routes that keep failing are avoided.
 
 **Execution knowledge base.** A small corpus of facts, retrieved by keyword and injected only when relevant. It holds the real bugs hit while building this, and a catalog of external data sources. Examples:
 
@@ -146,11 +158,10 @@ Say it in the chat. Waypoint drafts a typed rule, you confirm once, and it runs 
 |---|---|
 | **Generated execution wallet** | Custodial. Created through Privy. Signing authority sits with Waypoint's Authorization Key, which is what lets automations run with nobody present. Keys are held by Privy with Shamir sharding inside AWS Nitro Enclaves. |
 | **Imported execution wallet** | You paste a private key once. It is HPKE-encrypted before it leaves the process and never stored in plaintext by Waypoint. After import it is custodial like the above. |
+| **OKX Agentic Wallet** | Keys live in OKX's TEE and are not exportable. Waypoint hands each transaction to the logged-in `onchainos` CLI, which signs it. Add it from the wallet panel and use it like any execution wallet. |
 | **Linked browser wallet** | Non-custodial. Waypoint builds and simulates each step; your wallet signs it. No key ever reaches the server. |
 
 Execution wallets can be exported back to self-custody at any time. Execution wallets can be renamed, so you can say "Execution Wallet 2" or your own label.
-
-`backend/src/delegation/` contains a working EIP-7702 + MetaMask Delegation Framework implementation, verified on Base mainnet with a throwaway account. It is not exposed in the app yet.
 
 ## Execution guarantees
 
@@ -175,12 +186,13 @@ The chat UI is one client of this API. A developer calling it directly gets the 
 | Wallets | `GET /wallet/portfolio` · `/wallet/defi-positions` · `/wallet/health-factor` · `GET/POST /wallet/execution` · `POST /wallet/execution/import` · `/:id/rename` · `/:id/export` |
 | Automations | `POST /triggers` · `POST /chat/automations/confirm` · `GET /triggers` · `POST /triggers/:id/active` · `/check` · `DELETE /triggers/:id` · `GET /triggers/:id/executions` |
 | Trust list | `GET /trust` · `POST /trust/revoke` |
-| Agent service | `GET/POST /asp/plan`: a public, read-only planning service for agent marketplaces (OKX.AI A2MCP). Send `{goal, walletAddress?}`, get a validated plan back. It never signs or executes, asks one question when the goal is unclear, and is rate limited. |
+| Agent service | `GET/POST /asp/plan`: a public, read-only planning service for agent marketplaces (OKX.AI A2MCP). Send `{goal, walletAddress?}`, get a validated plan back. It never signs or executes, asks one question when the goal is unclear, and is rate limited. Each call is paid over x402 on X Layer. |
+| Registries | `GET /capabilities` · `GET /signers` · `GET /contracts` · `POST /wallet/execution/agentic` |
 | Meta | `GET /chains` · `GET /health` |
 
 ## Tech stack
 
-TypeScript · Express · viem · zod · better-sqlite3 (FTS5) · SIWE · Privy · Alchemy · LI.FI · Relay · Enso · OKX DEX API · Aave V3 · MetaMask Smart Accounts Kit · OpenAI-compatible model APIs
+TypeScript · Express · viem · zod · better-sqlite3 (FTS5) · SIWE · Privy · Alchemy · LI.FI · Relay · Enso · OKX DEX API · Aave V3 · OpenAI-compatible model APIs
 
 ## Project structure
 
@@ -200,7 +212,10 @@ backend/src/
   knowledge/         execution knowledge base
   wallets/           Privy execution wallets and wallet store
   accounts/          email, Google and SIWE auth
-  delegation/        EIP-7702 + MetaMask delegation module
+  capabilities/      one file per action type
+  providers/         routing provider registry
+  signers/           Privy and OKX Agentic Wallet signers
+  contracts/         contract author, gates, deployed-contract store
 frontend/            index.html (landing), app.html (app UI)
 logo/                brand assets
 ```
@@ -225,11 +240,3 @@ python3 -m http.server 3005
 Other scripts: `npm run demo -- "<goal>"` runs state, goal parsing and planning end to end without a server. `npm run compare:swap-providers` compares Enso and OKX routes on the same input without signing anything.
 
 `backend/.env.example` lists every variable: a main model and a separate review model, execution providers, data providers, auth, and Privy.
-
-## Direction
-
-- **More automations on the same engine:** price-triggered take-profit and stop-loss, portfolio rebalancing, yield migration, scheduled consolidation with thresholds.
-- **Route comparison across providers:** pick the best quote instead of a fixed order. The comparison tool already benchmarks Enso against OKX.
-- **More chains and protocols:** a chain is one file and a protocol is one adapter.
-- **Non-custodial delegated execution:** wire the delegation module into the app.
-- **Waypoint as an API** for wallets and apps that want an execution agent without building one.
